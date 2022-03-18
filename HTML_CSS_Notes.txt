@@ -152,8 +152,333 @@ Button in HTML
 **************************************************************************************************************************************************************************
 ********************************************************************************************************************************************
 
+Cascading Style Sheets (CSS) describes the visual style / presentation of the content written in HTML.
+
+h1 {
+color: blue;
+text-align: center;
+font-size: 20px;
+}
+
+h1 :: selector
+{....} :: declaration block
+font-size  :: Property
+20px :: value
+
+property + value :: Declaration/Style
 
 
+selector + declaration block :: A CSS rule
+
+Inline CSS : <h1 style="color: blue"> Heading </h1>
+
+
+Internal CSS 
+
+<head>
+..
+..
+...
+
+<style>
+h1 {
+color : blue;
+}
+</style>
+</head>
+
+
+External CSS
+
+<head>
+<link href="style.css" rel="stylesheet" />
+</head>
+
+style.css
+
+h1 {
+color: blue;
+}
+
+
+Styling text elements
+
+h1 {
+color: blue;
+font-size: 26px;
+font-family: sans-serif;
+text-transform: uppercase;
+font-style: italic;
+}
+
+p {
+line-height: 1.5;   --> It means line-height = 1.5 * font-size, by default, its value = 1.
+}
+
+** Inheritance causes the styling of the parent to be applied to the child elements also.
+
+h4 {
+text-align: center;
+}
+
+li {
+font-family: sans-serif;
+font-size: 20px;
+}
+
+list selector
+h1,h2,h3,p,li {
+font-family: sans-serif;
+}
+
+descendence selector :: it will select all 'p' elements inside the 'footer' element
+footer p {
+font-size: 16px;
+}
+
+article header p {
+font-style: italic
+}
+
+
+
+Class and ID selectors
+<p id="author">paragraph</p>
+
+/*  Comments in CSS  */
+#author {
+font-style: italic;
+}
+
+#copyright {
+font-size: 22px;
+}
+
+-- IDs can be used only once, so we can use classes if we want to use it again and again.
+
+
+.related-author {
+font-size: 18px;
+font-weight: bold;
+}
+
+
+.related {
+list-style: none  --> remove bullet points from the list elements
+}
+
+** never use id-selectors, always use classes in real world applications.
+
+
+
+.main-header {
+background-color: #f7f7f7
+}
+
+h1 {
+color: #1098ad;
+}
+
+aside {
+background-color: #f7f7f7;
+border: 5px solid #1098ad; (border-width  border-style  border-color)
+border-top: 5px solid #1098ad;
+border-bottom: 5px solid #1098ad; 
+}
+
+
+** Use Hexadecimal notation for colors, but if transparency is required, use RGB notation.
+
+
+
+
+.first-li {
+ font-weight: bold;
+}
+
+(or)
+
+li:first-child     (first-child is a psuedoclass)
+{
+font-weight: bold;
+}
+
+li:last-child {
+font-style: italic;
+}
+
+li: nth-child(even) {
+color: red;
+}
+
+
+** in the below case, the first 'p'-element of the article element will not get selected,
+	instead the only those 'p'-elements which are also first child of article elment will be selected.
+	
+article p:first-child {
+color: red;
+}
+
+article p:last-child {
+color: red;
+}
+
+
+Styling hyperlinks using psuedoclasses
+
+** don't directly style the anchor elements, always style using psuedoclass, to target different states. Always defined in the LVHA order.
+
+a:link {
+color: #1098ad;
+text-decoration: none;
+}
+
+a:visited {
+color: #777;
+}
+
+a:hover {
+color: orangered;
+font-weight: bold;
+text-decoration: underline dotted orangered; (text-decoration-line   text-decoration-style   text-decoration-color)
+}
+
+a:active {
+background-color: black;
+}
+
+
+Conflict between selectors
+
+declaration marked as ! important > Inline style >ID-selector (if multiple, then last one applies) > 
+Class-selector (psuedoclass has higher priority) > 
+element selector > Universal selectors
+
+
+footer p {
+color: green !important;  (example of important keyword)
+}
+
+
+Inheritance and Universal selector
+
+
+body (** It will have the lowest priority) {
+color: red;
+font-weight: bold;
+}
+
+
+** many properties don't get inherited, example : border properties.
+
+** mostly properties related to text get inherited, ex: font-***, color, line-height, letter-spacing, text-align, text-transform, text-shadow,
+   list-style, etc.
+** Universal selector : applies to every single element on the page. Even those properties that don't get inherited, can be applied to all
+                        the elements. Its not based on inheritance concept.
+
+
+
+CSS BOX model
+
+content, padding,border, margin
+fill area : content + padding area (background-color, backgroung-image)
+
+final element height/width (by default) :  border + padding + content
+
+.main-header {
+background-color: #f7f7f7;
+padding: 20px;
+padding-left: 40px;
+padding-bottom: 40px;
+(or)
+padding: 20px 40px (top/bottom  left/right)
+}
+
+
+global reset (using universal selector)
+
+* {
+margin: 0;
+padding: 0;
+}
+
+
+**If two margins(of adjacent elements) are occupying the same space, then both of them don't add up. instead one of them collapses.
+
+
+.post-img {
+width: 100%;
+height: auto; (to maintain the aspect ratio)
+}
+
+.container {
+width: 700px;
+margin-left: auto;
+margin-right: auto;
+}
+
+
+CSS Box types
+
+1) Inline elements : occupy only space necessary for the content; no line-breaks; heights and width don't apply;
+                     paddings and margins applied only horizontally
+					 ex: button, em, strong, img (inline-block), a, etc.
+					 use css --> display: inline;
+2) Block level elements : occupy 100% of the parent's width, hence are stacked vertically. The CSS box model applies perfectly.
+   use css --> display: block;
+3) Inline-Block elements : looks like inline from outside; behaves like block-level on the inside; occupies only content's space; no-line
+						   break caused; use css --> display: inline-block;
+
+						   
+nav a:link {
+margin-right: 30px;
+margin-top: 10px; (top margin doesn't work for inline elements)
+display: inline-block;
+}
+
+nav a:link:last-child {
+margin-right: 0;
+}
+
+Positioning in CSS
+
+1) Normal flow : default positioning; elements is "in flow";elements are laid out in order in which they appear in HTML code
+				 use CSS --> position: relative
+2) Absolute positioning : "out if flow"; no impact on surrounding elements; use top, bottom, right, left properties to position relative to the container
+						  use CSS --> position: absolute
+						  use CSS on parent element --> position: relative
+
+
+Psuedo elements
+
+h1::first-letter {
+font-style: normal;
+margin-right: 5px;
+}
+
+p::first-line {
+color: red;
+}
+
+h3 + p::first-line  ('+' here is a sibling selector, which selects the right next adjacent sibling of any element){
+color: red;
+}	
+
+
+h2::after {
+content: "TOP"; (mandatory field)
+background-color: #ffe70e;
+.
+.
+.
+.
+.
+display: inline-block;
+padding: 5px 10px;
+position: absolute; (don't forget to add position relative in 'h2' element)
+top: -10px;
+right: -25px;
+}
 ********************************** 3. BUILDING LAYOUTS ******************************************************************************************************
 ********************************** 4. COMPONENTS AND LAYOUTS ************************************************************************************************
 ********************************** 5. WEB DESIGN       ******************************************************************************************************
