@@ -55,4 +55,50 @@ then -- git push -u origin master
 
 
 
+Git Branching
+
+-- If working on a new feature, use a new branch for new feature. The code changes for the new feature can break the code,
+   so its better to create a new feature branch and make changes/commit in that branch first and merge the changes to the main branch later.
+-- During that period of development there may be a bug which may be notices in the main branch, that Bug can be separately 
+   handled (Hot fix branch) and 
+   changes could be merged in the main branch.
+
+-- git branch ==> shows different available branches and the current branch also
+-- git checkout -b newBranchName ==> to not only checkout but also create that branch
+-- git checkout ==> to only checkout already existing branch
+-- git diff branchNameNew ==> shows differences between current checkout branch and the 'branchNameNew'
+-- git push -u origin branchNameNew ==> to puch to github, on the new branch, instead of the 'main' branch
+
+
+Now create a pull request to the 'main' branch. This will merge the feature branch changes to the 'main' branch. This can be done either 
+from github directly ot using CLI.
+
+now to pull the changes from the github 'main' branch to the local 'main' branch
+-- git pull origin master (or use --git pull  ==> if origin is already as upstream)
+
+
+now to delete the existing local feature branch
+--git branch -d featureBranchName
+
+
+Git Merge conflicts
+
+--git merge main ==> merge to the checked out branch  the 'main' branch.
+
+
+Git Fork 
+Fork from github 
+Then make changes
+Finally create the pull request
+
+
+
+   
+to undo changes/commits
+
+--git reset fileName ==> if the changes were not commited and were just in the statging area
+--git reset Head~1 ==> It will move the head to the second last commit and will remove the latest commit
+--git reset hashOfSpecificCommit ==> to go back to a certain commit. use --git log (to get the hashnumber)
+--git reset --hard hashOfSpecificCommit ==> this will not just unstage the changes, but completely remove the changes.
+
 
