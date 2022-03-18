@@ -19,7 +19,7 @@ C:\Users\ankit.tripathi>git config --global user.email "ankitt50@gmail.com"
 
 Getting started
 
---git clone githuburl
+--git clone githuburl (or else) -- git init
 
 use ls -la command to check all the hidden folders on windows, this will also show .git folder, which stores all the commit related information
 
@@ -46,5 +46,13 @@ $ ssh-add ~/.ssh/id_ed25519
 
 
 -- git push origin master
+
+
+if initially the repo was not cloned, but git init was used then,
+
+-- git remote origin gitrepourl
+then -- git push -u origin master
+
+
 
 
