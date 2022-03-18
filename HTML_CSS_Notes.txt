@@ -1,0 +1,159 @@
+**********************************HTML CSS******************************************************************************************************
+************************************************************************************************************************************************
+
+
+Browser sends request to webserver and recieves back the Response. The response contains the HTML/CSS/JS files. A static website is where the files 
+are sent as they are. But in dynamic websites, server first generate the response based on the request, and then sends back the response.
+
+HTML - content
+CSS - styling
+JS - progg. language of the front-end. this makes the website dynamic.
+
+VSCode (from Microsoft) - code editor
+
+Setup of VSCode
+1) Go to extensions (from the left hand side options), search for "prettier" code formatter and install and enable it.
+2) Go to setting, search for default formatter, select prettier code formatter.
+3) Go to setting, search for format on save, and check the cheeckbox.
+4) Go to setting, search for Auto save, and select onfocuschange.
+5) Go to setting, search for Tab size, and select 2.
+6) Go to extensions (from the left hand side options), search for "one monokai" theme, and install and set color theme.
+7) Go to extensions (from the left hand side options), search for "image preview" and install and enable it.
+8) Go to extensions (from the left hand side options), search for "color highlight" and install and enable it.
+9) Go to extensions (from the left hand side options), search for "Auto Rename Tag" and install and enable it.
+10) Go to extensions (from the left hand side options), search for "Live server" and install and enable it.
+
+index.html
+** Always have index.html as the first entry point to the website.
+
+write exclamation mark (!) and then hit tab to get html template in the VSCode.
+
+Use MDN docs to read about HTML
+
+**************************************************************************************************************************************************************************
+**************************************************************************************************************************************************************************
+********************************** 1. HTML FUNDAMENTALS******************************************************************************************************
+**************************************************************************************************************************************************************************
+**************************************************************************************************************************************************************************
+
+HyperText Markup Langugage : to structure and describe the content fo a webpage. Its not a progg. language.
+
+
+Element : <p> Sometext </p>
+
+<p> : opening tag
+</p> : closing tag
+content : Sometext
+
+
+Common HTML document structure
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Title</title>
+</head>
+<body>
+<h1> Main heading of the page</h1>
+</body>
+</html>
+
+Comments in HTML
+<!-- Comments -->
+
+
+Headings / Text elements
+
+<h1></h1>
+<h2></h2>
+<h3></h3>
+<h4></h4>
+<h5></h5>
+<h6></h6>
+
+
+<p></p> : paragraph
+
+<b></b> : bold (older element, doesn't have any semantic meaning)
+<strong></strong> : same as bold visually, but has semantic meaning (HTML 5)
+
+
+<i></i> : italic (older element, doesn't have any semantic meaning)
+<em></em> : same as italic visually, but has semantic meaning (HTML 5)
+
+List elements in HTML
+
+ordered list
+<ol>
+<li></li>
+<li></li>
+<li></li>
+</ol>
+
+unordered list
+<ul>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+
+Image element in HTML
+
+<img src="post-img.jpg" alt="alternative text" /> 
+never miss the alternative text attribute, as it helps search engine to know about the image. Also, it allows blind people access our website, as screen\
+readers use this attribute.
+
+
+Hyperlinks in HTML
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" >MDN Web Docs</a> 
+
+setting target = blank opens a new tab, when we click on the link
+
+
+<a>MDN Web Docs</a> :: this isn't a hyperlink, href element makes an anchor tag a hyperlink
+<a href="#"></a> :: It goes back to top of the page (placeholder link)
+
+
+
+
+Structuring the Page
+
+header, artcicle , footer are semantic elements, and doesn't change anything visually
+
+<header>
+<h1></h1>
+<nav>
+<a></a>
+<a></a>
+<a></a>
+</nav>
+</header>
+
+<article>
+<header></header>
+....
+...
+..
+</article>
+
+<aside></aside>
+
+<footer></footer>
+
+
+Button in HTML
+<button>Add to Cart</button>
+
+**************************************************************************************************************************************************************************
+********************************************************************************************************************************************
+********************************** 2. CSS FUNDAMENTALS ******************************************************************************************************
+**************************************************************************************************************************************************************************
+********************************************************************************************************************************************
+
+
+
+********************************** 3. BUILDING LAYOUTS ******************************************************************************************************
+********************************** 4. COMPONENTS AND LAYOUTS ************************************************************************************************
+********************************** 5. WEB DESIGN       ******************************************************************************************************
