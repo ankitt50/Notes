@@ -1,0 +1,50 @@
+Git and Github 
+
+what is Git?
+-- version control system
+
+Git Commands
+-- clone
+-- add
+-- commit
+-- push
+-- pull
+
+Installing git 
+
+C:\Users\ankit.tripathi>git config --global user.name "ankitt50"
+
+C:\Users\ankit.tripathi>git config --global user.email "ankitt50@gmail.com"
+
+
+Getting started
+
+--git clone githuburl
+
+use ls -la command to check all the hidden folders on windows, this will also show .git folder, which stores all the commit related information
+
+--git status
+
+--git add . 
+--git add filename
+--git commit -m "message heading" -m "description"
+
+to connect your system with your git account use ssh key
+
+$ ssh-keygen -t ed25519 -C "your_email@example.com"   ===> to generate ssh key
+
+$ clip < ~/.ssh/id_ed25519.pub ==>  Copies the contents of the id_ed25519.pub file to your clipboard
+
+add this to github account
+
+also add it to your sshagent
+
+$ eval "$(ssh-agent -s)"
+$ ssh-add ~/.ssh/id_ed25519
+
+
+
+
+-- git push origin master
+
+
