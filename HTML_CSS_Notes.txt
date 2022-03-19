@@ -479,6 +479,142 @@ position: absolute; (don't forget to add position relative in 'h2' element)
 top: -10px;
 right: -25px;
 }
+
+**************************************************************************************************************************************************************************
+********************************************************************************************************************************************
 ********************************** 3. BUILDING LAYOUTS ******************************************************************************************************
+**************************************************************************************************************************************************************************
+********************************************************************************************************************************************
+
+
+Layout : the way content is placed/arranged on the webpage.
+
+3 ways of building layouts with CSS :
+1) Float Layouts (old way of building layouts)
+2) Flexbox (for 1-d )
+3) CSS grids (for 2-D layouts)
+
+
+Float 
+
+.author-img {
+float: left;
+}
+
+.author {
+padding-left: 80px; (this padding will not be from the image, but from the left corner of the viewport.
+                         This is because, the float element is taken out of flow)
+float: left; (if you want the element to start after the image, and is not behind the image. i.e. now the margins/paddings 
+			  will be taken from the image and not from the view port)
+
+float: right; (if you want the text to be in the righmost corner.)
+}
+
+** if all the children of a parent element are float, then the element height collapses.
+** text and inline elements wrap around the floated element
+
+
+.clear {
+clear: both; (this extra empty element is created inside the parent which has all its children as float, and hence its height is collapsed.
+              So,adding extra element and clearing both floats will help the  parent element to retain its height)
+}
+
+** another way to implement the above mentioned solution
+.clearfix::after {
+content: "";
+clear: both;
+display: block;
+}
+
+article {
+width: 825px;
+float: left;
+}
+
+aside {
+width: 300px;
+float: right;
+}
+
+footer {
+clear: both; (this clear is to make sure that footer is not affected by above two floats, and it remains in correct position)
+}
+
+
+aside {
+box-sizing: border-box; (by default its "content-box", this changes how width/height is calculated. Now width/height is not
+                         just the width/height of the content, but of the entire element including padding and border)
+}
+
+
+
+Flexbox
+
+.container {
+display: flex;
+align-items: center; (to align items vertically (cross-axis). By default the height of the container is the height of the longest element and by default
+					  all elements too take the height of the container. But horizontally by default the width of the elements is as per 
+					  the content size.)
+justify-content: center; (to center content horizontally(main-axis) when flex-direction is "row" by default) 
+}
+
+Flex properties :
+1) align-self: applied to flex items, to give it different align-items property, different from the one defined in the container.
+2) order: by default all the items have an order of 0. So to move any item to the first place, give it an order of -1.
+3) gap: we can achieve this by giving margins to the flex-items as well. But "gap" property can be directly defined in the container.
+4) flex-basis: kind of a recommendation for the width (if flex-direction is "row") of the flex-item.But it isn't rigid, as the 
+               flex-item can shrink, if enough space isn't present.
+5) flex-shrink: 0; (now flex-item can't be shrinked)
+6) flex-grow: 1; (now the flex-item is allowed to grow to occupy the entire width of the container)
+7) flex-grow: 2; (now the flex-item will grow to occupy twice the space as compared to other flex-items)
+8) flex: 1; (flex-grow: 1)
+9) flex: 0  0 200px; (flex-grow  flex-shrink  flex-basis)
+
+
+
+CSS Grid :
+
+.container {
+display: grid;
+grid-template-columns: 250px 150px; (there will be 2 columns, with the given width)
+grid-template-rows: 300px 200px; (there will be 2 rows, with the given heigth)
+
+
+gap: 30px; (create the gap between rows and columns)
+(or)
+row-gap: 60px;
+column-gap: 30px;
+
+}
+
+
+grid lines are the lines which divide the grid and separate the rows and columns.
+they are number of columns + 1 (vertically)
+and numbe of rows + 1 (horizontally)
+
+grid area is the area created by intersention of the grid lines. They may/ may not have grid item in them.
+
+
+Grid properties :
+1) grid-template-rows/grid-template-columns
+2) row-gap/column-gap/gap
+3) justify-item/align-item : to align cells within the grid area, and not in the container.
+4) justify-content/align-content : justify-content is same as flexbox; align-content is same as align-item in flex-box  
+5) justify-self/align-self : to overwrite justify-item/align-item propeties at grid item level.
+6) grid-column/grid-row : to move any item to a particular cell. ex: grid-column: 1/ 2 (or) 1 / 4  and gird-row: 3/ 4
+
+
+grid-template-columns: 3fr 1fr 1fr 1fr;
+
+grid-template-columns: 1fr 1fr 1fr auto;
+
+grid-template-columns: 250px 200px 1fr 1fr;
+
+grid-template-rows: 3fr 1fr 1fr 1fr; (but first define the height of the container)
+
+
+
+
+
 ********************************** 4. COMPONENTS AND LAYOUTS ************************************************************************************************
 ********************************** 5. WEB DESIGN       ******************************************************************************************************
