@@ -1,0 +1,99 @@
+************************************REACT*******************************************************************
+************************************************************************************************************
+
+
+************************************REACT BASICS AND WORKING WITH COMPONENTS**************************************
+******************************************************************************************************************
+
+
+React - It is a JS library to build User Interfaces
+		It is all about components.Bcoz, all UIs are in the end made up of components.
+		
+		Components : Reusability, and Separation of concerns.
+		
+		--> to create and start react app :
+		
+			npm install -g create-react-app
+			npx create-react-app my-app
+			cd my-app
+			npm start
+			
+			npm install command is used to reinstall/install all the dependencies.
+			These downloaded/installed dependenies can be seen in the node_module folder.
+			
+			index.js file is the first file to be executed.
+			index.html file contains the "root" element of the react-app.
+			
+			JSX : HTML code inside javascript code. 
+			
+			Declarative approach is used for React components. We just define the state of elements and let the React 
+			figure out the actual JS DOM instructions.
+			The other approach is called "Imperative" approach. This is used in plain vanilla JS. We have to give clear step by step instructions
+			regarding the DOM manipulation.
+			
+			Component in React is a JavaScript function. This function's return statement must have only one root element.
+			
+		--> We can use "props" for passing data to any component.
+			
+			** Inside {} we can write any JS code.
+			** We can name the parameter anything, but as a convention, we use "props" as a name.
+			
+			
+			function ExpenseItem(props) {
+				return {
+					<div ..... >
+					<div>{props.title}</div>
+					....
+					....
+					....
+					</div>
+				}
+			}
+			
+			
+			<ExpenseItem 
+			title = {expenses[0].title}
+			></ExpenseItem>
+			
+			** there is a special prop called "children". Don't define it like an attribute, but have to wrap it inside the component.
+			
+			function Card(props) {
+			return {
+			<div className="Card">{props.children}</div>
+			}
+			}
+			
+			<Card>
+			<div>.......</div>
+			....
+			....
+			...
+			</Card>
+			
+		--> JSX 
+			
+			Under the hood :
+			
+				React.createElement(
+				'div',
+				{},
+				React.createElement(
+				'h2',
+				{},"Let's get started"),
+				React.createElement(
+				'Expense',
+				{items: expenses}
+				)
+				);
+			
+			JSX Code that we write :
+			
+				<div>
+					<h2>Let's get started</h2>
+					<Expense items={expenses}/>
+				</div>
+			
+
+
+	
+			
