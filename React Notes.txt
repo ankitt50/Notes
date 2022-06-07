@@ -92,6 +92,100 @@ React - It is a JS library to build User Interfaces
 					<h2>Let's get started</h2>
 					<Expense items={expenses}/>
 				</div>
+				
+
+************************************REACT STATE AND WORKING WITH EVENTS**************************************
+******************************************************************************************************************
+
+		--> Adding event listener to a button :
+			
+			<button onclick={() => {Console.log('Clicked!')}}></button>
+			
+			<button onclick={clickHandler}>Click me</button>
+			
+			const clickHandler =() => {
+				Console.log('Clicked');
+			};
+		
+		--> "State" in React :
+		
+				import React, {useState} from 'react'; //useState is a react hook. It is called directly inside the react component function.
+				
+				const [title, setTitle] = useState('defaultTitle');
+				// the default Title value provided is used only the first time the component is rendered.
+				// When the component is re-rendered after the setTitle method call, the title value provided is 
+				// the new updated value, which can be used inside the component.
+				
+				const clickHandler = () => {
+					setTitle("UpdatedTitle"); // setTitle don't just change the value of title variable. It is a special function to 
+											  // also render the component again with the new updated title value
+											  // Also the value of the variable is not changed right away, but is scheduled to be
+											  // changed.
+					// state is managed on per component instance basis. So, changes in one of the instance of a component
+					// will not be reflected on other instances of that same component.
+					// Also state used to manage any one variable of a component will not affect state used for any other
+					// variable of that same component.
+				};
+				
+				return (
+				..
+				..
+				..
+				<h2>{title}</h2>
+				..
+				..
+				..
+				);
+				
+		--> working with forms :
+		
+				const [enteredTitle, setEnteredTitle] = setState('');
+				
+				
+				
+				titleChangeHandler = (event) => {
+					Console.log(event.target.value);
+					setEnteredTitle(event.target.value);
+					// to save the entered title in a variable,
+					// which can be used later, when user submits the form.
+				};
+				
+				
+				const formSubmitHandler = (event) => {
+					event.preventDefault(); // to prevent submission of page to the server and reloading of the page.
+					..
+					..
+					..
+					..
+				};
+				
+				<form onSubmit={formSubmitHandler}>
+					<div className="..">
+						<label>Title</label>
+						<input type="text" value={enteredTitle} onChange={titleChangeHandler}/>
+					</div>
+					<div className="..">
+						<label>Amount</label>
+						<input type="number" min="" step="" />
+					</div>
+					<div className="..">
+						<label>Date</label>
+						<input type="date" min="" max="" />
+					</div>
+					<div>
+						<button type="Submit">Submit</button>
+					</div>
+				</form>
+				
+				** Adding "enteredTitle" as value in the text field, which we are getting useState, leads to two way binding.
+				
+				** to pass data from child to parent component, we can pass a function as a prop from parent to child. This
+				function can be called from child whenever we need.
+				
+				
+				
+			
+			
 			
 
 
