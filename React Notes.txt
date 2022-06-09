@@ -182,6 +182,16 @@ React - It is a JS library to build User Interfaces
 				** to pass data from child to parent component, we can pass a function as a prop from parent to child. This
 				function can be called from child whenever we need.
 				
+				** Lifting state up : If we have to pass data between components that don't have parent-child relation, then we have to
+				   first pass data from child to parent (i.e lifting up) and then parent to the component to which we have to finally 
+				   pass the data to.
+				   
+				** Controlled Component : Whenever there is a two-way binding between child and parent component, then child component is called
+										  Controlled component. In two way binding, the child component passes the data (on Change only) 
+										  to the parent through a method, and parent passes the same data/variable as a prop to the child.
+				
+				
+				
 				
 				
 			
