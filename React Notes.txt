@@ -192,8 +192,51 @@ React - It is a JS library to build User Interfaces
 				
 				
 				
+************************************RENDERING LISTS AND CONDITIONAL CONTENT**************************************
+******************************************************************************************************************
+
+		--> Rendering a list of data :
+				
+				{props.events.map(event => <ExpenseItem key={expense.id} title={expense.title} ...... />)}
+				
+				** always add "key" when rendering a list.
+				
+		--> Outputting Conditional components :
+		
+			{filteredExpenses.length === 0 ? (<p>No content to display</p>) : 
+			(
+				filteredExpenses.map(expense => <ExpenseItem key= {} ....... />)
+			)
+			}
 				
 				
+				(or)
+				
+			{filteredExpenses.length === 0  && (<p>No content to display</p>) }
+			{filteredExpenses.length > 0  && (
+				filteredExpenses.map(expense => <ExpenseItem key= {} ....... />)
+			)}
+			
+			 (or)
+			 
+			 const expenseContent = <p>No content to display</p> ;
+			 
+			 if(filteredExpenses.length > 0) {
+				expenseContent = filteredExpenses.map(expense => <ExpenseItem key= {} ....... /> ;
+			 }
+			 
+			 return (
+			 ..
+			 ..
+			 ..
+			 {expenseContent}
+			 ..
+			 .
+			 .
+			 );
+			 
+			 
+			 
 			
 			
 			
