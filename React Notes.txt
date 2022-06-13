@@ -234,9 +234,53 @@ React - It is a JS library to build User Interfaces
 			 .
 			 .
 			 );
+
+
+************************************STYLING REACT COMPONENTS**************************************
+****************************************************************************************************************** 
 			 
+		--> Dynamic Inline Style
+				
+				ex: <label style={{color: !isValid ? 'red' : 'black'}}> Some Label Text </label>
+			
+					<input style={
+					{
+						borderColor : !isValid ? 'red' : 'black',
+						background: !isValid > 'Salmon' : 'transparent'
+					}
+					}
+					type="text" onChange={someHandler} />
 			 
-			 
+		--> Dynamically setting CSS classes
+		
+				<div className={`form-input ${!isValid ? 'invalid' : ''}`} >
+					....
+				</div>
+				
+				
+				in CSS file :
+					
+					.form-control.invalid label {
+						color: 'red'
+					}
+					
+					.form-control.invalid input {
+						borderColor: 'red',
+						background: 'Salmon'
+					}
+					
+		--> Styled Components 
+				
+				npm install --save styled-components
+				
+				** used to prevent spill overs i.e. no other component should be affected, if by mistake we have used multiple
+					components with the same class name. styled-component package provides a unique class name for all the components
+					which have used it for styling.
+					
+				** We can also pass props to the styled component methods for dynamic styling.
+				
+		    ** We can also achive the same using "CSS modules" in react.
+			
 			
 			
 			
