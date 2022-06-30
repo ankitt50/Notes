@@ -281,8 +281,110 @@ React - It is a JS library to build User Interfaces
 				
 		    ** We can also achive the same using "CSS modules" in react.
 			
+************************************Diving Deeper: working with Fragments, Portals and "Refs"**************************************
+****************************************************************************************************************** 
+	
+		--> JSX limitations : can't have more than one element adjacent to another when returning them from a component.
+							  
+							  We generally use a wrapping "div" at top level. 
+							  We can also wrap these adjacent elements inside an array. But always add "key" attribute for each of these elements.
+							  But with these wrapping "div", we have a new problem called "<div> Soup".
+							  This means there are all these wrapping elements which are now being rendered, but don't have any usage.
+							  
+							  We can also create a custom component, which just returns the childrens and nothing else.
+							  Then this component can be used to wrap the adjacent components/elements.
+							  
+							  function Wrapper(props) {
+								
+								return props.children;
+								
+							  }
+							  
+							  
+			React Fragments : provided by react to wrap around adjacent elements.
+							
+							<React.Fragment>
+								<h2>.....</h2>
+								<p>.....</p>
+							</React.Fragment>
+							  
+							  
+							  (or)
+							  
+							<>
+								<h2>.....</h2>
+								<p>.....</p>
+							</>
+							
 			
+			React Portals :
+							
+							If we are creating a "Modal" component/ Side Menu Component/ or any overlay component. Its not a good practice to
+							write/render (in final DOM) the component side-by-side other Components. It although works fine, but is not a good practice.
+							
+							
+							create new div elements in the index.html :						
+							
+							<body>
+								...
+								....
+								<div id="backdrop-root"></div>
+								<div id="overlay-root"></div>
+								<div id="root"></div>
+							</body>
+							
+							
+							
+							inside the ErrorModal component return : 
+							
+							<React.Fragment>
+							{ 
+							
+							ReactDOM.createPortal(
+								<Backdrop onConfirm={props.onConfirm} />, // This is your custom modal component
+								document.getElementById('backdrop-root')
+							)
+							
+							}
+							>/React.Fragment>
+							
 			
+			"Refs" :    import {useState, useRef} from 'react';
+						
+						It is another hook provided by react library.
+						
+						const nameInputRef = useRef();
+						
+						
+						<input
+							id="username"
+							type="text"
+							value={enteredUsername}
+							onChange={usernameChangeHandler} --> this will not be required, once we use "ref"
+							ref = {nameInputRef}
+							
+						/>
+						
+						
+						
+						cont submitBtnHandler = (event) => {
+						
+						event.preventDefault;
+						....
+						....
+						...
+						console.log(nameInputRef.current.value);
+						}
+						
+						
+						** Using refs instead of useState hooks, gives us direct access to the real DOM, and we are not using 
+						react to manipulate or read from the element.
+						Also, the input elements now becomes uncontrolled.
+						
+						** It is generally not a good practice to work with real DOM element directly to manipulate them.
+						Although reading from them isn't a big issue.
+			
+							
 			
 
 
