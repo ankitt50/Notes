@@ -385,8 +385,337 @@ React - It is a JS library to build User Interfaces
 						Although reading from them isn't a big issue.
 			
 							
+************************************Advanced: Handling Side effects, using reducers and using the context API**************************************
+****************************************************************************************************************** 
+
+		--> Effect (or "Side Effect") : main job of react application is to render UI and react to User Input.
+										Anything else, which is not concerned with UI rendering/re-rendering is "Side Effect"
+										ex: Store data, send Http requests, timers, etc.
+										These tasks must happen outside of the normal component evaluation. As they might delay the rendering.
+										
+										So,for this we can use "useEffect()" hook of the react.
+													
 			
-
-
+									localStorage.setItem('isLoggedIn','1');
+									localStorage.removeItem('isLoggedIn');
+									
+									const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn');
+									
+									if (storedUserLoggedInInformation === '1') {
+										setIsLoggedIn(true); // Using useState  will create a infinite loop.
+															// everytime we call setIsLoggedIn, the component will be re-rendered and the 
+															// if loop will again be executed and again the setIsLoggedIn function will
+															// be called.
+									}
+									
+									we can wrap this inside the "useEffect" hook, if we want it to run/execute just once.
+									
+									useEffect(
+										() => {
+										
+										
+										const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn');
+									
+										if (storedUserLoggedInInformation === '1') {
+										setIsLoggedIn(true); 
+										}
+										
+											`
+										}, []);
+										
+									
+									useEffect can also be used to execute only if a dependency is changes.
+									
+									useEffect(
+										() => {
+										setFormIsvalid(enteredEmail.includes('@') && eneteredPassword.trim().length > 6);`
+										}, [enteredEmail, eneteredPassword]);
+										
+									
+									** don't add state updating functions as dependencies inside the useEffect.
+									** don't add "built-in" APIs or functions.
+									** don't add variables/functions defined outside of your component. Such functions/variables are not
+									   created inside of a component function and hence changing them won't affect your components.
+									  
+									** In short, add anything that could change because your component re-rendered.
+						
 	
 			
+								** useEffect cleanup -> for example we want to check if the user entered email is valid or not. Then we don't have to check it after every keystroke.
+														Or if we want to check if the entered username already exists or not in the DB? We should not ideally be sending request to the server after 
+														every keystroke. Instead, it would be better if we check the user input after the user has stopped typing for some seconds.
+														This is called de-bounsing.
+														With useEffect, it is very easy to implement.
+														
+														ex : 
+														
+														useEffect(
+														
+														() => {
+														
+															const identifier = setTimeout(()=> {
+																console.log('Checking for validity');
+																setFormIsValid()
+															}, 500);
+														
+														
+														// cleanup function : It is executed before the use effect will be executed again next time.
+														// So, it run before the useEffect function everytime, except for the very first time.
+														return () => {
+															clearTimeout(identifier);
+														}
+														},[enteredEmail,eneteredPassword]);
+														
+		
+		
+		--> useReducer() for state management : It can be used when the state management for any variable is more complex and useState() becomes more error prone.
+		
+												import React, {useState, useEffect, useReducer} from 'react';
+												
+												const[state, dispatchFn] = useReducer(reducerFn, initialState, initFn);
+												
+												
+												// this function is defined outside the component
+												const emailReducer = (state,action) => {
+													if(action.type === 'USER_INPUT') {
+													// action represents the new user entered values.
+														return {value: action.val, isValid: action.val.includes('@')}; 
+													}
+													if(action.type === 'INPUT_BLUR') {
+													// state represents the current state, and is guaranteed to be the latest by react.
+														return {value: state.value, isValid: state.value.includes('@')}; 
+													}
+													return {value: '', isValid: false};
+												};
+												
+												const Login = (props) => {
+													
+													const[emailState, dispatchEmail] = useReducer(emailReducer, {value: '', isValid: false});
+													
+													
+													...
+													...
+													...
+													
+													const emailChangeHandler = (event) => {
+														dispatchEmail({type: 'USER_INPUT', val: event.target.value});
+														...
+														...
+														...
+													}
+													
+													const passwordChangeHandler = (event) => {
+														setEnteredPassword(event.target.value);
+														setFormIsValid(
+															emailState.value.includes('@') && event.target.value.trim().length > 6
+															
+															(or)
+															
+															emailState.isValid && event.target.value.trim().length > 6
+														);
+													}
+													
+													const validateEmailHandler = () => {
+														dispatchEmail({type:'INPUT_BLUR'});
+													}
+													
+													const {isValid: emailIsValid } = emailState; // destructuring the object and giving it an alias "emailIsValid"
+													const{isValid: passwordIsValid} = passwordState;
+													
+													useEffect(
+														() => {
+															const identifier = setTimeout(() => {
+																setFormIsValid(emailIsValid && passwordIsValid);
+															},500);
+															
+															return () => {
+																clearTimeout(identifier);
+															}
+														}, [emailIsValid,passwordIsValid ]
+													);
+													
+												
+												}
+		
+		
+		--> React Context APi : component-wide, "behind-the-scenes" state storage.
+								It helps in cases where we have to pass data from one component to too many components.
+								
+								In "auth-context.js" file :
+								
+								import React from 'react';
+								
+								const AuthContext = React.createContext(
+								{
+									isLoggedIn: false
+								}
+								);
+								
+								export default AuthContext;
+								
+								
+								In "App.js" file :
+								
+								import AuthContext from 'auth-context';
+								
+								
+								retun (
+								<React.Fragment>
+								<AuthContext.Provider
+									value={
+										{
+											isLoggedIn: isLoggedIn
+										}
+									}
+								>
+									<MainHeader .......... />
+									<main>
+										{ !isLoggedIn && <Login ......./> }
+										{ isLoggedIn && <Home ......./> }
+									</main>
+								<AuthContext.Provider>
+								</React.Fragment>
+								)
+								
+								
+								In "Navigation.js" file :
+								
+								const Navigation = (props) => {
+									<AuthContext.Consumer>
+									{
+										(ctx) => {
+											return (
+												<nav .....>
+												<ul>
+													{ctx.isLoggedIn && (
+														<li> <a href="/">Users</a>
+													)}
+												..
+												...
+												...
+												..
+												</nav>
+											)
+										}
+									}
+										
+									</AuthContext.Consumer>
+								}
+								
+								
+								Alternative way is using "useContext()" hook, instead of the AuthContext.Consumer
+								
+								const Navigation = (props) => {
+								
+								const ctx = useContext(AuthContext);
+									
+											return (
+												<nav .....>
+												<ul>
+													{ctx.isLoggedIn && (
+														<li> <a href="/">Users</a>
+													)}
+												..
+												...
+												...
+												..
+												</nav>
+											)
+										
+								}
+								
+				
+				Alternate to using the AppContext.Provider in the App.js file is to create a custom context provider :
+				
+				
+						in the "auth-context.js" file :
+						
+						import React, { useState, useEffect } from 'react';
+
+						const AuthContext = React.createContext({
+						  isLoggedIn: false,
+						  onLogout: () => {},
+						  onLogin: (email, password) => {}
+						});
+
+						export const AuthContextProvider = (props) => {
+						  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+						  useEffect(() => {
+							const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn');
+
+							if (storedUserLoggedInInformation === '1') {
+							  setIsLoggedIn(true);
+							}
+						  }, []);
+
+						  const logoutHandler = () => {
+							localStorage.removeItem('isLoggedIn');
+							setIsLoggedIn(false);
+						  };
+
+						  const loginHandler = () => {
+							localStorage.setItem('isLoggedIn', '1');
+							setIsLoggedIn(true);
+						  };
+
+						  return (
+							<AuthContext.Provider
+							  value={{
+								isLoggedIn: isLoggedIn,
+								onLogout: logoutHandler,
+								onLogin: loginHandler,
+							  }}
+							>
+							  {props.children}
+							</AuthContext.Provider>
+						  );
+						};
+
+						export default AuthContext;
+						
+						
+						in the App.js file :
+						
+						import React, { useContext } from 'react';
+
+						import Login from './components/Login/Login';
+						import Home from './components/Home/Home';
+						import MainHeader from './components/MainHeader/MainHeader';
+						import AuthContext from './store/auth-context';
+
+						function App() {
+						  const ctx = useContext(AuthContext);
+
+						  return (
+							<React.Fragment>
+							  <MainHeader />
+							  <main>
+								{!ctx.isLoggedIn && <Login />}
+								{ctx.isLoggedIn && <Home />}
+							  </main>
+							</React.Fragment>
+						  );
+						}
+
+						export default App;
+						
+						
+						in index.js file :
+						
+						import React from 'react';
+						import ReactDOM from 'react-dom/client';
+
+						import './index.css';
+						import App from './App';
+						import { AuthContextProvider } from './store/auth-context';
+
+						const root = ReactDOM.createRoot(document.getElementById('root'));
+						root.render(
+						  <AuthContextProvider>
+							<App />
+						  </AuthContextProvider>
+						);
+		
+							
+							
