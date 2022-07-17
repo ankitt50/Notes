@@ -716,6 +716,103 @@ React - It is a JS library to build User Interfaces
 							<App />
 						  </AuthContextProvider>
 						);
+						
+
+************************************A look behind the scenes of React & optimization techniques**************************************
+****************************************************************************************************************** 
+
+		--> React is a JS library for building UI. React uses components to build UI. React doesn't care about the Real DOM. It only cares about the Components, their data (i.e. state,
+			props and context). Whenever the state/context/props of a component changes, the React re-evaluates the Component, but that doesn't means that real DOM is changed/ re-rendered.
+			React determines how the component tree currently looks like and what it should look like.
+		
+		--> ReactDOM is an interface to the web. It manipulates the Real DOM.
+			ReactDOm receives the differences and then manipulates the real DOM. This is Virtual DOM diffing.
+			
+		--> Re-evaluates all the child components, whenever the parent component is re-evaluated. This is not very optimised. So, if we want this child component to be re-evaluated
+			only in case the props sent by the parent are changed, we can wrap our child component in React.memo().
+			
+			ex :
+			import React from 'react';
+			
+			const ChildComponent = (props) => {
+				return ...... ;
+			}
+			
+			export default React.memo(ChildComponent);
+			
+		--> useCallback hook : 
+		
+			import React, {useState, useCallback} from 'react';
+			..
+			..
+			..
+			
+			
+			
+			function App() {
+				const [showParagraph, setShowParagraph] = useState(false);
+				
+				Approach 1:
+				const toggleParagraphHandler = () => {
+					setShowParagraph((prevShowParagrapg) => !prevShowParagraph);
+				};
+				
+				Approach 2:
+				const toggleParagraphHandler = useCallback(() => {
+					setShowParagraph((prevShowParagrapg) => !prevShowParagraph);
+				},[]);
+				
+				return <div .....
+					......
+					.....
+					..
+					<Button onClick={toggleParagraphHandler}> Toggle Paragraph! </Button>
+				
+			}
+			
+			export default App;
+			
+			
+			In Button.js file :
+			
+			import React from 'react';
+			
+			const Button = (props) => {
+				return ...... ;
+			}
+			
+			export default React.memo(Button);
+			
+			
+			
+			
+			**** Only in the approach 2, the react-memo will work as expected.
+			
+			
+			Just like, useCallback for remembering the functions, we can use "useMemo" hook to remember data.
+			
+			
+			import React, {usememo} from 'react';
+			
+			const DemoList = (props) => {
+				const {items} = props;
+				const sortedList = useMemo(
+				() => {
+					return items.sort((a,b) => a - b);
+				}, [items]
+				); // using "useMemo()" hook ensures that sortedList in our component is not evaluated everytime this component is re-evaluated by the react.
+				// Instead, its called only when items prop is changed.
+				
+				return (....);
+			}
+			
+			export default React.memo(DemoList);
+			
+			
+			
+			
+			
+			
 		
 							
 							
