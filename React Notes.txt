@@ -807,6 +807,102 @@ React - It is a JS library to build User Interfaces
 			}
 			
 			export default React.memo(DemoList);
+
+
+************************************An alternative way of building components : class based components **************************************
+****************************************************************************************************************** 
+
+		--> In most modern/new React projects, you won't see class-based components. But many traditional applications use these.
+			Also to build error boundaries, we still need these components.
+			
+			class Product extends Component {
+				render() {
+					return <h2> A product!</h2>
+				}
+			}
+			
+			Traditionally (React < 16.8), you had to use class-based components to manage "State". But, React 16.8 introduced hooks for functional components.
+			Class-based components can't use hooks.
+			
+			const User = (props) => {
+				return <li className={classes.user}>{props.name}</li>;
+			}
+			
+						||
+						||
+						||
+						\/
+			import {Component} from 'react';
+			
+			class User extends Component {
+				render() {
+					return <li className={classes.user}>{this.props.name}</li>;
+				}
+			}
+			
+			
+			
+			
+			class Users extends Component {
+			
+			constructor() {
+				super();
+				this.state = {
+						showUsers: true
+				};
+			}
+			
+			toggleUsershandler() {
+				this.setState((currState) => {
+						return {showUsers: !currState.showUsers};
+				});
+				
+			}
+				render() {
+				const usersList = (
+				<ul>.......</ul>
+				);
+					return (
+						<div className={classes.users}>
+							<button onClick={this.toggleUsershandler.bind(this)}>
+							{this.state.showUsers ? 'Hide' : 'Show'} Users
+							</button>
+							{this.state.showUsers && usersList}
+						</div>
+					)
+				}
+			}
+			
+			
+		--> components lifecycle : 
+			ex: componentDidMount() : once component was evaluated and rendered : equivalent to useEffect(...,[])
+				componentDidupdate() : once component was re-evaluated and re-rendered
+				componentWillUnmount() : right before component is removed from the DOM : useEffect(() => {..... return () => {..}}, [])
+																						  so basically like the clean-up function of use effect.
+		
+		--> Error Boundaries : 
+								We can handle the errors in the components itself, using try and catch. But if we want to handle it outside the 
+								component, then we can use Error Boundary.
+								
+								class ErrorBoundary extends Component {
+									constructor() {
+										super();
+										this.state = {hasError: false};
+									}
+								
+									componentDidCatch(error) {
+										// this method gets triggerd, whenever a child component throws an error.
+										this.setState({hasError: true});
+									}
+									
+									render() {
+									if(this.state.hasError) {
+										return <p>Something ewnt wrong!</p>
+									}
+										return this.props.children;
+									}
+								}
+			
 			
 			
 			
