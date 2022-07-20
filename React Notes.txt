@@ -902,6 +902,79 @@ React - It is a JS library to build User Interfaces
 										return this.props.children;
 									}
 								}
+	
+	************************************Sending Http Requests **************************************
+****************************************************************************************************************** 
+			
+		--> React App/ Browser-side Apps don't directly talk to DBs.
+			
+			** nowdays browsers have built in API to support Http requests. This Fetch API.
+			
+			function App() {
+				function fetchMoviesHandler() {
+					fetch('https://swapi.dev/api/films').then(
+						response => {return response.json();}
+					)then(
+						data => {setMovies(data.results);}
+					).catch();
+				}
+			}
+			
+			function App() {
+				function fetchMoviesHandler() {
+					const response = await fetch('https://swapi.dev/api/films');
+					const data = await response.json();
+					setMovies(data.results);
+				}
+			}
+			
+			
+			function App() {
+				function fetchMoviesHandler() {
+				try{
+					const response = await fetch('https://swapi.dev/api/films');
+					
+					
+					if(response.ok) {
+						// response also has a "status" field to hol concrete status code.
+						// we can manually check that as well.
+						const data = await response.json();
+						setMovies(data.results);
+						
+					}
+					else {
+						throw new Error('Something went wrong');
+					}
+					
+					
+				}
+				catch(error) {
+					setError(error.message);
+				}
+				}
+				
+				
+				useEffect(
+						() => {
+							fetchMoviesHandler();
+						  }, []
+					)
+					
+				
+				function addMovieHandler(movie) {
+					fetch('https://react-http-6b4a6.firebaseio.com/movies.json', {
+						method : 'POST', 
+						body: JSON.stringify(movie),
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
+					const data = await response.json();
+					console.log(data);
+				}
+			}
+			
+			
 			
 			
 			
