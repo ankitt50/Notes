@@ -1282,4 +1282,200 @@ React - It is a JS library to build User Interfaces
 
 			export default useInput;
 			
-							
+	************************************Diving into Redux (An alternative to the context API) **************************************
+****************************************************************************************************************** 
+
+		--> Redux : State management system for cross-component or app-wide state.
+					Local state : which belongs to a single component. --> useState/useReducer
+					Cross-Component state : effects multiple components. ex: open/closed state of modal overlay. --> props
+					App-wide state : entire app is affected. ex: user authentication status. --> props
+					
+					** Both cross-component and app-wide state can be managed by useContext/redux.
+					
+					useContext disadvantages: complex setup/management in large enterprise level application; performance issues
+					for high frequency updates.
+					
+					Redux is all about central data(state) store. Components can subscribe to the central data store.
+					Components don't directly change the data. For this reducer functions are used.
+					Components dispatch actions, which is then forwarded to reducer functions. Then reducer function change the data,
+					based on the action.
+					
+					npm install redux
+					
+					npm install redux react-redux
+					
+					npm install @reduxjs/toolkit
+					
+					
+					
+					
+					store --> index.js file :
+					
+					import { configureStore } from '@reduxjs/toolkit';
+
+					import counterReducer from './counter';
+					import authReducer from './auth';
+
+
+					const store = configureStore({
+					  reducer: { counter: counterReducer, auth: authReducer },
+					});
+
+					export default store;
+					
+					
+					
+					
+					store --> auth.js file : 
+
+					import { createSlice } from '@reduxjs/toolkit';
+
+					const initialAuthState = {
+					  isAuthenticated: false,
+					};
+
+					const authSlice = createSlice({
+					  name: 'authentication',
+					  initialState: initialAuthState,
+					  reducers: {
+						login(state) {
+						  state.isAuthenticated = true;
+						},
+						logout(state) {
+						  state.isAuthenticated = false;
+						},
+					  },
+					});
+
+					export const authActions = authSlice.actions;
+
+					export default authSlice.reducer;
+					
+					
+					
+					
+					store --> counter.js file :
+					
+					import { createSlice } from '@reduxjs/toolkit';
+
+					const initialCounterState = { counter: 0, showCounter: true };
+
+					const counterSlice = createSlice({
+					  name: 'counter',
+					  initialState: initialCounterState,
+					  reducers: {
+						increment(state) {
+						  state.counter++; // It looks like we are directly making changes to the state object,
+											// but this is not the case. Internally redux toolkit makes sure to not directly 
+											// make changes to the state object.
+						},
+						decrement(state) {
+						  state.counter--;
+						},
+						increase(state, action) {
+						  state.counter = state.counter + action.payload;
+						},
+						toggleCounter(state) {
+						  state.showCounter = !state.showCounter; 
+						},
+					  },
+					});
+
+					export const counterActions = counterSlice.actions;
+
+					export default counterSlice.reducer;
+					
+					
+					
+					
+					Just like useContext, we have to create a provider (index.js file) :
+					
+					import React from 'react';
+					import ReactDOM from 'react-dom/client';
+					import { Provider } from 'react-redux';
+
+					import './index.css';
+					import App from './App';
+					import store from './store/index';
+
+					const root = ReactDOM.createRoot(document.getElementById('root'));
+					root.render(
+					  <Provider store={store}>
+						<App />
+					  </Provider>
+					);
+					
+
+					
+					to use the redux store data in components :
+					
+					1) 
+					import { useSelector } from 'react-redux';
+					
+					const isAuth = useSelector(state => state.auth.isAuthenticated);
+					
+					{!isAuth && <Auth />}
+					{isAuth && <UserProfile />}
+					
+					
+					
+					2) 
+					import { useDispatch } from 'react-redux';
+					import { authActions } from '../store/auth';
+					
+					const dispatch = useDispatch();
+
+				    const loginHandler = (event) => {
+					event.preventDefault();
+
+					dispatch(authActions.login());
+				    };
+
+					<form onSubmit={loginHandler}>
+					  ...
+					  <button>Login</button>
+					</form>
+					
+					3) 
+					  const dispatch = useDispatch();
+					  const counter = useSelector((state) => state.counter.counter);
+					  const show = useSelector((state) => state.counter.showCounter);
+
+					  const incrementHandler = () => {
+						dispatch(counterActions.increment());
+					  };
+
+					  const increaseHandler = () => {
+						dispatch(counterActions.increase(10)); // { type: SOME_UNIQUE_IDENTIFIER, payload: 10 }
+					  };
+
+					  const decrementHandler = () => {
+						dispatch(counterActions.decrement());
+					  };
+
+					  const toggleCounterHandler = () => {
+						dispatch(counterActions.toggleCounter());
+					  };
+					  
+					  
+					  
+					  
+					  {show && <div className={classes.value}>{counter}</div>}
+					  <div>
+						<button onClick={incrementHandler}>Increment</button>
+						<button onClick={increaseHandler}>Increase by 10</button>
+						<button onClick={decrementHandler}>Decrement</button>
+					  </div>
+					  <button onClick={toggleCounterHandler}>Toggle Counter</button>
+
+	************************************Advance Redux  **************************************
+****************************************************************************************************************** 
+					
+					
+		--> Reducer functions must be pure, side-effect free and synchronous.
+			So, if your code has side-effects and asynchronous tasks, then either use useEffect() inside the component itself, or
+			create your own action creators, and don't use the default provided by redux toolkit.
+
+			
+					
+					
