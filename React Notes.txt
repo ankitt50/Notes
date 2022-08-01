@@ -1745,3 +1745,102 @@ React - It is a JS library to build User Interfaces
 									}
 								  };
 								};
+
+
+	************************************creating multi-page SPA with React Router  **************************************
+****************************************************************************************************************** 
+
+		--> npm install react-router-dom@5
+		
+		
+		App.js File :
+		
+		import { Route, Switch, Redirect } from 'react-router-dom';
+		
+		<Switch>
+        <Route path='/' exact>
+          <Redirect to='/quotes' />
+        </Route>
+        <Route path='/quotes' exact>
+          <AllQuotes />
+        </Route>
+        <Route path='/quotes/:quoteId'>
+          <QuoteDetail />
+        </Route>
+        <Route path='/new-quote'>
+          <NewQuote />
+        </Route>
+        <Route path='*'>
+          <NotFound />
+        </Route>
+      </Switch>
+	  
+	  
+	  index.js file : 
+		import ReactDOM from 'react-dom';
+		import { BrowserRouter } from 'react-router-dom';
+
+		import './index.css';
+		import App from './App';
+
+		ReactDOM.render(
+		  <BrowserRouter>
+			<App />
+		  </BrowserRouter>,
+		  document.getElementById('root')
+		);
+		
+	
+		To send user to a url  (use NavLink or Link):
+		
+		import { NavLink } from 'react-router-dom';
+		<NavLink to='/new-quote' activeClassName={classes.active}>
+              Add a Quote
+        </NavLink>
+		
+		
+		Programatically sending a user to a url (useHistory hook can be used) :
+		
+		  import { useHistory, useLocation } from 'react-router-dom';
+		  const history = useHistory();
+		  const location = useLocation();
+
+		  const queryParams = new URLSearchParams(location.search); // "URLSearchParams" function is provided by JS.
+
+		  const isSortingAscending = queryParams.get('sort') === 'asc'; // to get query params we can use useLocation() hook.
+
+		  const sortedQuotes = sortQuotes(props.quotes, isSortingAscending);
+
+		  const changeSortingHandler = () => {
+			// you can use either history.push or history.replace method.
+			history.push({
+			  pathname: location.pathname,
+			  search: `?sort=${(isSortingAscending ? 'desc' : 'asc')}`
+			});
+		  };
+		  
+		  
+		
+			  import { useParams, Route, Link, useRouteMatch } from 'react-router-dom';
+			  const match = useRouteMatch(); // To make the  nested route definition more flexible, and less error prone.
+			  // match.path gives the route path definition.
+			  // match.url gives the actual current url.
+			  const params = useParams(); // To use path params, we can use "useParams" hook.
+
+			  const { quoteId } = params; //  path definition : "/quotes/:quoteId"
+		  
+			  ..
+			  ...
+			  ...
+			  ...
+				<Route path={match.path} exact>
+				<div className='centered'>
+				  <Link className='btn--flat' to={`${match.url}/comments`}>
+					Load Comments
+				  </Link>
+				</div>
+			  </Route>
+			  <Route path={`${match.path}/comments`}>
+				<Comments />
+			  </Route>
+		
