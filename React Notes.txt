@@ -1843,4 +1843,31 @@ React - It is a JS library to build User Interfaces
 			  <Route path={`${match.path}/comments`}>
 				<Comments />
 			  </Route>
+			  
 		
+
+	************************************ Deploying React Application **************************************
+****************************************************************************************************************** 
+		--> Steps :
+					 Testing
+						|
+						|
+						v
+			Optimization (ex: lazy loading, React Memo)
+						|
+						|
+						v
+			Build Application for Production
+						|
+						|
+						v
+			Upload production code to Production server
+						|
+						|
+						v
+				Configure Server
+	   
+					
+					
+			
+					
