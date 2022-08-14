@@ -234,3 +234,81 @@ age = 18;
 // } else {
 //   alert("Not a  number " + favourite);
 // }
+
+/* Logical operators */
+const hasDriversicense = true;
+const hasGoodVision = false;
+const isTired = false;
+const shouldDrive = hasGoodVision && hasDriversicense && !isTired;
+
+// if (shouldDrive) {
+//   console.log("You can Drive");
+// } else {
+//   console.log("Some one else should Drive");
+// }
+
+const averageScoreDolphins = (97 + 112 + 101) / 3;
+const averageScoreKoalas = (109 + 95 + 123) / 3;
+
+if (averageScoreDolphins > averageScoreKoalas && averageScoreDolphins >= 100) {
+  // console.log("Team Dolphin wins");
+} else if (
+  averageScoreDolphins < averageScoreKoalas &&
+  averageScoreKoalas >= 100
+) {
+  // console.log("Team Koalas wins");
+} else if (
+  averageScoreDolphins === averageScoreKoalas &&
+  averageScoreDolphins >= 100 &&
+  averageScoreKoalas >= 100
+) {
+  // console.log("Draw");
+} else {
+  // console.log("No one wins the trophy");
+}
+
+/* switch Statement */
+
+const day = "monday";
+
+switch (day) {
+  case "monday":
+    // console.log("Plan course structure");
+    break;
+  case "tuesday":
+    // console.log("Prepare theory videos");
+    break;
+  case "wednesday":
+  case "thursday":
+    // console.log("Write Code examples");
+    break;
+  case "friday":
+    // console.log("record videos");
+    break;
+  case "saturday":
+  case "sunday":
+    // console.log("Enjoy the weekend");
+    break;
+  default:
+  // console.log("invalid day");/
+}
+
+/* expressions and  statements 
+expression : produces some value. (ex : 3+4, 1991, true && false & !false)
+statement : bigger piece of code. Doesn't produce value. They are instructions to the computer. (ex: if-else statement, switch statement).
+*/
+
+/* Conditional operator (Ternary operator) */
+
+age = 29;
+const hobby = age >= 18 ? "Drive" : "Travel";
+// console.log(`I like to ${hobby}`);
+
+const billValue = 430;
+const tip =
+  billValue < 300 && billValue > 50 ? billValue * 0.15 : billValue * 0.2;
+// console.log(
+//   `The bill was ${billValue}, the tip was ${tip}, and the total value ${
+//     billValue + tip
+//   }`
+// );
