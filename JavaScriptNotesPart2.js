@@ -63,3 +63,11 @@ const calcRetirementAgeArrowFn = (birthYear, retirementAge) => {
 const retirementAge1 = calcRetirementAgeArrowFn(1993, 65);
 
 // console.log(age1, age2, age3, retirementAge1);
+
+/* Function calling other functions */
+const calcRetirementTimeLeft = (birthYear, retirementAge) => {
+  const currentAge = calcAge(birthYear);
+  return retirementAge - currentAge;
+  /* Any statement after the 'return' statement (inside the fn.) is not executed!! */
+};
+// console.log(calcRetirementTimeLeft(1993, 65));
