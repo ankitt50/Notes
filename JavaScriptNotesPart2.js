@@ -71,3 +71,28 @@ const calcRetirementTimeLeft = (birthYear, retirementAge) => {
   /* Any statement after the 'return' statement (inside the fn.) is not executed!! */
 };
 // console.log(calcRetirementTimeLeft(1993, 65));
+
+/* Arrays in JS */
+const friends = ["Ankit", "Saksham", "Vikrant", "Arun"];
+const years = new Array(1991, 1984, 2008, 2020);
+
+/* Square bracket syntax to fetch Array elements */
+// console.log(friends[0]);
+// console.log(friends[3]);
+// console.log(years[0]);
+
+// console.log(friends.length);
+// console.log(years.length);
+// console.log(friends[friends.length - 1]);
+// console.log(years[years.length - 1]);
+
+friends[0] = "Mishra";
+/* Although the friends array was defined as a 'const', but still we can mutate it. Because its not primitive type. */
+// console.log(friends);
+
+/* But we can't re-assign an entirely new array */
+// friends = ["Mishra", "Sharad", "Vikrant", "Arun"];
+//Uncaught TypeError: invalid assignment to const 'friends'
+const year = 1993;
+const arrayWithExpressionsAndVariables = [year, 1998, 2037 - 1993];
+// console.log(arrayWithExpressionsAndVariables);
