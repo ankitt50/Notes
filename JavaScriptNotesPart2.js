@@ -96,3 +96,133 @@ friends[0] = "Mishra";
 const year = 1993;
 const arrayWithExpressionsAndVariables = [year, 1998, 2037 - 1993];
 // console.log(arrayWithExpressionsAndVariables);
+
+/* Basic Array operations */
+const newLengthOfArray = friends.push("Nikhil"); /* push to the end of array */
+years.push(1885);
+// console.log(friends);
+// console.log(years);
+// console.log(newLengthOfArray);
+
+friends.unshift("Aditya"); /* push to the start of array */
+// console.log(friends);
+
+const poppedElement =
+  friends.pop(); /* removes the last element and return it */
+// console.log(friends);
+// console.log(poppedElement);
+
+friends.shift(); /* removes the first element and return it */
+// console.log(friends);
+
+const firstOccurence =
+  friends.indexOf(
+    "Arun"
+  ); /* Returns the index of the first occurrence of a value in an array, or -1 if it is not present. */
+// console.log(firstOccurence);
+
+const foundElement =
+  friends.includes(
+    "Arun"
+  ); /* Determines whether an array includes a certain element, returning true or false as appropriate. */
+// console.log(foundElement);
+
+/* Objects in JS */
+const ankit = {
+  firstName: "Ankit",
+  lastName: "Tripathi",
+  age: 2037 - 1993,
+  job: "Software Developer",
+  friends: friends,
+};
+// console.log(ankit);
+
+/* dot notation */
+// console.log(ankit.friends);
+// console.log(ankit.age);
+ankit.location = "Agra, UP, India";
+// console.log(ankit.location);
+
+/* square braket : inside square braket we can write expressions */
+// console.log(ankit["age"]);
+const jobKey = "job";
+// console.log(ankit[jobKey]);
+ankit["techstack"] = "Java, JS, ReactJS, Springboot";
+// console.log(ankit["techstack"]);
+
+/* Object methods */
+ankit.getWater = function (glasses) {
+  // console.log(`${this.firstName} Fetching ${glasses} glasses of water`);
+};
+
+ankit.getWater(4);
+ankit["getWater"](5);
+
+const saksham = {
+  firstName: "Saksham",
+  lastName: "Tripathi",
+  birthYear: 1998,
+  job: "Software Developer",
+  friends: friends,
+  // calcAge: function () {
+  //   return 2037 - this.birthYear;
+  // },
+  calcAge: function () {
+    this.age = 2037 - this.birthYear;
+    return this.age;
+  },
+  getSummary: function () {
+    return `${
+      this.firstName + " " + this.lastName
+    } is a ${this.calcAge()} years old ${this.job}`;
+  },
+};
+
+// console.log(saksham.calcAge());
+// saksham.calcAge();
+// console.log(saksham.age);
+// console.log(saksham.getSummary());
+
+/* Loops in JS */
+
+/* for-Loop*/
+
+for (let i = 1; i <= 10; i++) {
+  // console.log(`iteration number : ${i}`);
+}
+ankit.friends.unshift("");
+ankit.friends.unshift(undefined);
+for (let i = 0; i < ankit.friends.length; i++) {
+  if (!ankit.friends[i]) {
+    continue;
+    /*continue to escape the current iteration and move to the next iteration */
+  }
+  // console.log(ankit.friends[i]);
+  if (ankit.friends[i] === "Arun") {
+    // console.log("Arun found!");
+    break;
+    /*break is to completely terminate the loop.*/
+  }
+}
+
+/* loop inside loop */
+for (let i = 1; i < 3; i++) {
+  for (let j = 1; j < 3; j++) {
+    // console.log(i, j);
+  }
+}
+
+/* while loop */
+let rep = 1;
+while (rep <= 10) {
+  // console.log(rep);
+  rep++;
+}
+
+/* 
+let dice = Math.trunc(Math.random() * 6) + 1;
+while (dice !== 6) {
+  // console.log(dice);
+  dice = Math.trunc(Math.random() * 6) + 1;
+}
+*/
