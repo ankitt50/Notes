@@ -20,6 +20,10 @@ They are part of Web APIs.
 These APIs are implemented by browsers.
 */
 
+const changeText = function (text, textFieldName) {
+  document.querySelector(textFieldName).textContent = text;
+};
+
 let won = false;
 let score = 20;
 let correctNumber = Math.trunc(Math.random() * 20 + 1);
@@ -42,7 +46,8 @@ document.querySelector('.check').addEventListener('click', function (event) {
   }
   if (!guessedNumber) {
     // console.log('Won');
-    document.querySelector('.message').textContent = 'Not a number!';
+    // document.querySelector('.message').textContent = 'Not a number!';
+    changeText('Not a number!', '.message');
     return;
   }
   if (correctNumber === guessedNumber) {
@@ -52,8 +57,10 @@ document.querySelector('.check').addEventListener('click', function (event) {
     if (highScore < score) {
       highScore = score;
     }
-    document.querySelector('.highscore').textContent = highScore;
-    document.querySelector('.number').textContent = correctNumber;
+    // document.querySelector('.highscore').textContent = highScore;
+    // document.querySelector('.number').textContent = correctNumber;
+    changeText(highScore, '.highscore');
+    changeText(correctNumber, '.number');
     /*
       styling using DOM manipulation.
     */
@@ -62,22 +69,33 @@ document.querySelector('.check').addEventListener('click', function (event) {
   } else {
     score--;
     if (score === 0) {
-      document.querySelector('.message').textContent = 'You Loose!';
-      document.querySelector('.score').textContent = score;
+      // document.querySelector('.message').textContent = 'You Loose!';
+      // document.querySelector('.score').textContent = score;
+      changeText('You Loose!', '.message');
+      changeText(score, '.score');
       return;
     }
     if (score === -1) {
       return;
     }
-    if (correctNumber < guessedNumber) {
-      //   console.log('large number');
-      document.querySelector('.message').textContent = 'Too high';
-      document.querySelector('.score').textContent = score;
-    } else {
-      //   console.log('large number');
-      document.querySelector('.message').textContent = 'Too Low';
-      document.querySelector('.score').textContent = score;
-    }
+    // if (correctNumber < guessedNumber) {
+    //   //   console.log('large number');
+    //   // document.querySelector('.message').textContent = 'Too high';
+    //   // document.querySelector('.score').textContent = score;
+    //   changeText('Too high', '.message');
+    //   changeText(score, '.score');
+    // } else {
+    //   //   console.log('large number');
+    //   // document.querySelector('.message').textContent = 'Too Low';
+    //   // document.querySelector('.score').textContent = score;
+    //   changeText('Too Low', '.message');
+    //   changeText(score, '.score');
+    // }
+    changeText(
+      `Too ${correctNumber < guessedNumber ? 'high' : 'low'} `,
+      '.message'
+    );
+    changeText(score, '.score');
   }
 });
 
@@ -85,10 +103,15 @@ document.querySelector('.again').addEventListener('click', function (event) {
   won = false;
   score = 20;
   correctNumber = Math.trunc(Math.random() * 20 + 1);
-  document.querySelector('.message').textContent = 'Start guessing...';
-  document.querySelector('.score').textContent = score;
-  document.querySelector('.number').textContent = '?';
-  document.querySelector('.guess').value = '';
+  // document.querySelector('.message').textContent = 'Start guessing...';
+  // document.querySelector('.score').textContent = score;
+  // document.querySelector('.number').textContent = '?';
+  // document.querySelector('.guess').value = '';
+  changeText('Start guessing...', '.message');
+  changeText(score, '.score');
+  changeText('?', '.number');
+  changeText('', '.guess');
+
   /*
       styling using DOM manipulation.
     */
