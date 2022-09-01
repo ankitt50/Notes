@@ -48,4 +48,18 @@ JS: high level, prototype based, OOP, multi-paradigm, interpreted / JIT complile
     JS runtime (ex: browsers) : contains everything required to use JS.
                                 ex: JS engine, Web APis, call back queue.
 
+    Execution context : environment in which we execute JS code. It stores all the info     required for execution.
+    There's always one single Global/top-level execution context.
+    But for every function a separate execution context is created. All these execution contexts together create a call stack.
+    Execution context consists of variable environment (let/const/var variables, functions, arguments object), scope chain, this-keyword.
+    ** for execution context created for arrow functions don't have arguments object and this-keyword.
+
+    Compilation --> creation and execution of Global execution Context (anything outside functions) --> execution of functions and waiting for callbacks
+
+
+    scopes in JS : global scope, function scope, block scope(ES6).
+                   only let/const variables are block scoped. in strict mode functions are also
+                   block scoped.
+
+
 */
