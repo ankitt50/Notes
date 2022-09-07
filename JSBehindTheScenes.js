@@ -58,8 +58,90 @@ JS: high level, prototype based, OOP, multi-paradigm, interpreted / JIT complile
 
 
     scopes in JS : global scope, function scope, block scope(ES6).
-                   only let/const variables are block scoped. in strict mode functions are also
-                   block scoped.
+                   only let/const variables are block scoped. 
+                   in strict mode functions are also block scoped.
 
+    ** All the scopes have access to variables from outer scopes (called variable look up in scope chain)
+*/
 
+"use strict";
+
+function calAge(birthYear) {
+  console.log(firstName);
+  const age = 2022 - birthYear;
+  console.log(`Hi ${firstName}, you are ${age} years old`);
+  function printAgeMsg() {
+    const lastName = "Tripathi";
+    console.log(`Hi ${firstName + " " + lastName}, you are ${age} years old`);
+
+    if (birthYear > 1986 && birthYear <= 1993) {
+      var str2 = "var is not block scoped";
+      const str = "Congrats you are a millenial";
+      console.log(str);
+      const firstName = "Not Ankit";
+      /* 
+      In below line, firstName variable defined in this if-block will be used instead of the 'firstName' defined  outside*/
+      console.log(`Hi ${firstName + " " + lastName}, you are ${age} years old`);
+      function tempTestFn() {
+        console.log("Functions are block scoped in strict mode after ES6");
+      }
+    }
+    console.log(str2); // this will work fine. bcoz var is not block scoped.
+    // tempTestFn(); this will give error.
+  }
+  printAgeMsg();
+  // console.log(str2); this will give error.
+}
+
+const firstName = "Ankit";
+calAge(1993);
+
+/*
+Hoisting : some variables are accessible before they are declared in the code. Behind the scenes, the code is scanned before execution, and for each variable, a new property is create in the variable Environment object.
+                                   Hoisted                    Initial Value              Scope
+function declarations               Yes                       actual function            block
+'var' variables                     Yes                       undefined                  function
+'let' and 'const' variables         No ("technically" yes)    <uninitialized>,TDZ        block
+function expressions and arrows     depends on 'var' or 'const'/'let' declaration usage                     
+
+**TDZ : Temporal Dead Zone.
+In TDZ, error is "Can't access before initialization". Otherwise error is "not defined".
+*/
+
+console.log(me); //o/p : undefined
+// console.log(job); // Uncaught ReferenceError: can't access lexical declaration 'job' before initialization
+// console.log(year); Uncaught ReferenceError: can't access lexical declaration 'year' before initialization
+
+var me = "Ankit";
+let job = "SD";
+const year = 1993;
+
+console.log(sum(1, 2)); // O/p : 3
+// console.log(sum1(1, 2)); Uncaught ReferenceError: can't access lexical declaration 'sum1' before initialization
+// console.log(sum2(1, 2)); Uncaught ReferenceError: can't access lexical declaration 'sum2' before initialization
+console.log(sum3); // undefined
+//console.log(sum3(1, 2)); // Uncaught TypeError: sum3 is not a function
+
+function sum(a, b) {
+  return a + b;
+}
+
+const sum1 = function (a, b) {
+  return a + b;
+};
+
+const sum2 = (a, b) => a + b;
+
+var sum3 = (a, b) => a + b;
+
+var x = 1;
+
+console.log(x === window.x); // var - keyword creates a global property in window object.
+
+/* 
+this - keyword : special variable created for every execution context (function). takes the value of the owner of the function. the value defined only when fn. is called.
+1) Method - this keyword refers to the object that is calling it.
+2) Simple function call - this keyword is undefined in strict mode. otherwise, it will be window object.
+3) Arrow functions - don't get their own this keyword. refers to the surrounding function this-keyword
+4) event listener - DOM element that listener is attached to.
 */
