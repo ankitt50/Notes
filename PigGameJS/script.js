@@ -24,6 +24,7 @@ let isPlaying = true;
 
 let isPlayer1 = true;
 
+// setScore();
 score0El.textContent = score0;
 score1El.textContent = score1;
 currentScore0El.textContent = currentScore0;
@@ -38,6 +39,47 @@ const tempFunc = function (arg) {
 };
 const tempFuncBind = tempFunc.bind(this);
 */
+
+// const setScore = () => {
+//   console.log(score0);
+//   console.log(currentScore0);
+//   console.log(score0El);
+// };
+
+// const setScore = function () {
+//   console.log('------------------initial conditions-------------------');
+//   console.log('score0 :' + score0);
+//   console.log('currentScore0 :' + currentScore0);
+//   console.log('score0El :' + score0El);
+//   console.log('score0El.textContent :' + score0El.textContent);
+//   console.log('currentScore0El :' + currentScore0El);
+//   console.log('currentScore0El.textContent :' + currentScore0El.textContent);
+//   console.log('score1 :' + score1);
+//   console.log('currentScore1 :' + currentScore1);
+//   console.log(score1El);
+//   console.log('score1El.textContent :' + score1El.textContent);
+//   console.log(currentScore1El);
+//   console.log('currentScore1El.textContent :' + currentScore1El.textContent);
+//   score0El.textContent = score0;
+//   score1El.textContent = score1;
+//   currentScore0El.textContent = currentScore0;
+//   currentScore0El.textContent = currentScore1;
+//   console.log('------------------------After changes---------------------');
+//   console.log('score0 :' + score0);
+//   console.log('currentScore0 :' + currentScore0);
+//   console.log('score0El :' + score0El);
+//   console.log('score0El.textContent :' + score0El.textContent);
+//   console.log('currentScore0El :' + currentScore0El);
+//   console.log('currentScore0El.textContent :' + currentScore0El.textContent);
+//   console.log('score1 :' + score1);
+//   console.log('currentScore1 :' + currentScore1);
+//   console.log('score1El :' + score1El);
+//   console.log('score1El.textContent :' + score1El.textContent);
+//   console.log('currentScore1El :' + currentScore1El);
+//   console.log('currentScore1El.textContent :' + currentScore1El.textContent);
+// };
+// setScore();
+// console.log(score0);
 
 btnRoll.addEventListener('click', function () {
   if (!isPlaying) {
@@ -81,6 +123,7 @@ btnRoll.addEventListener('click', function () {
       currentScore1 += dice;
     }
   }
+  // setScore();
   score0El.textContent = score0;
   score1El.textContent = score1;
   currentScore0El.textContent = currentScore0;
@@ -124,6 +167,8 @@ btnHold.addEventListener('click', function () {
       player1El.classList.toggle('player--active');
     }
   }
+  // setScore();
+
   score0El.textContent = score0;
   score1El.textContent = score1;
   currentScore0El.textContent = currentScore0;
@@ -148,10 +193,12 @@ btnNew.addEventListener('click', function () {
   player0El.classList.remove('player--winner');
   player1El.classList.remove('player--winner');
 
+  // setScore();
+
   score0El.textContent = score0;
   score1El.textContent = score1;
   currentScore0El.textContent = currentScore0;
-  currentScore0El.textContent = currentScore1;
+  currentScore1El.textContent = currentScore1;
 
   diceEl.classList.add('hidden');
 });

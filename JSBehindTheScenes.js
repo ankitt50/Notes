@@ -142,6 +142,44 @@ console.log(x === window.x); // var - keyword creates a global property in windo
 this - keyword : special variable created for every execution context (function). takes the value of the owner of the function. the value defined only when fn. is called.
 1) Method - this keyword refers to the object that is calling it.
 2) Simple function call - this keyword is undefined in strict mode. otherwise, it will be window object.
-3) Arrow functions - don't get their own this keyword. refers to the surrounding function this-keyword
+3) Arrow functions - don't get their own this keyword. refers to the surrounding function's/scope's this-keyword
 4) event listener - DOM element that listener is attached to.
 */
+
+console.log(this); // In global scope it refers to the window object.
+
+const calAge2 = function (birthYear) {
+  console.log(this); // 'this' is undefined
+  return 2022 - birthYear;
+};
+
+const calAge3 = (birthYear) => {
+  console.log(this); // 'this' will represent window object
+  return 2022 - birthYear;
+};
+
+calAge3(1993);
+calAge2(1993);
+
+const objectWithMethod = {
+  birthYear: 1993,
+  calAge: function () {
+    console.log(this); //'this' will refer to the object which is calling the method.
+    return 2022 - this.birthYear;
+  },
+  calAge2: () => {
+    console.log(this); // 'this' will refer to the window object
+  },
+};
+
+objectWithMethod.calAge();
+objectWithMethod.calAge2();
+
+const objectWithOutMethod = {
+  birthYear: 1998,
+};
+
+objectWithOutMethod.calAge = objectWithMethod.calAge;
+const fnWithoutObject = objectWithMethod.calAge;
+console.log(objectWithOutMethod.calAge());
+// console.log(fnWithoutObject()); // error : 'this' is undefined.
