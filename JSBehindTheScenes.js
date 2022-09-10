@@ -183,3 +183,29 @@ objectWithOutMethod.calAge = objectWithMethod.calAge;
 const fnWithoutObject = objectWithMethod.calAge;
 console.log(objectWithOutMethod.calAge());
 // console.log(fnWithoutObject()); // error : 'this' is undefined.
+
+/*
+Primitives vs. Objects (Reference types) in JS
+
+Objects are stored in the memory heap (in JS engine). But primitive types are stored in the call stack.
+
+To copy any object and merge it into a new Object, we can use Object.assign method.
+It creates a shallow copy.
+
+*/
+
+const jessica = {
+  firstName: "Jessica",
+  lastName: "Williams",
+  age: 27,
+  family: ["Alice", "Bob"],
+};
+
+const jessica2 = Object.assign({}, jessica);
+jessica2.lastName = "Davis";
+jessica2.family.push("Mary");
+jessica2.family.push("John");
+console.log("Before Marriage", jessica);
+// Since its a shallow copy, last name will be different in both objects.
+// but the family array will be same.
+console.log("After Marriage", jessica2);
