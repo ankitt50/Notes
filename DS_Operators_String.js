@@ -123,3 +123,35 @@ restaurant.orderDelivery({
   mainIdx: 2,
   starterIdx: 2,
 });
+
+/* Spread operator (ES6) 
+1) gives us all the elements of the array. Unlike destruturing where we can pick the elements we want.
+2) doesn't create new variables. During destructuring , we do get new variables.
+3) It works on all iterables (array, string, map, set). But can be used if the final result is an array, or when passing it to another function. ex: it will not work if passed during template literal string creation.
+*/
+const newArr = [4, 5, ...arr];
+console.log(arr); //op: [1, 2, 3]
+console.log(newArr); //op : [ 4, 5, 1, 2, 3 ]
+console.log(...newArr); // op : 4, 5, 1, 2, 3
+
+const newMainMenu = [...restaurant.mainMenu, "Gnocci"];
+console.log(newMainMenu);
+
+// copy arrray (shallow copy)
+const newCopiedArr = [...newArr];
+console.log(newCopiedArr); //op: [ 4, 5, 1, 2, 3 ]
+
+// Join 2 arrays or more
+const joinedArr = [...restaurant.mainMenu, ...restaurant.starterMenu];
+console.log(joinedArr); // op: [ "Pizza", "Pasta", "Risotto", "Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad" ]
+
+// spread operator with Objects. ex: creating a copy of another object
+const newRestaurant = { ...restaurant };
+const newRestaurant1 = { foundedIn: 1999, ...restaurant, founder: "Ankit" };
+console.log(newRestaurant);
+console.log(newRestaurant1);
+newRestaurant.name = "new Name";
+console.log(newRestaurant.name); // op: new Name
+console.log(restaurant.name); //op: Classico Italiano
+
+/*Rest pattern and  parameter */
