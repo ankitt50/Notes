@@ -155,3 +155,96 @@ console.log(newRestaurant.name); // op: new Name
 console.log(restaurant.name); //op: Classico Italiano
 
 /*Rest pattern and  parameter */
+const [d, e, ...others] = newArr;
+console.log(d, e); // op: 4 5
+console.log(others); // op : [1,2,3]
+
+// the rest pattern must always be the last element.
+const [pizza, , risotto, ...otherFoodItems] = joinedArr;
+console.log(pizza, risotto); //op : Pizza Risotto
+console.log(otherFoodItems); // op :[ "Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad" ]
+
+// works for objects as well
+const { name: name1, ...restPropeties } = restaurant;
+console.log(name1);
+console.log(restPropeties);
+
+// parameters in a  function
+const addNumber = function (...numbers) {
+  let sum = 0;
+  // numbers is an array, due to usage of rest pattern.
+  numbers.forEach((element) => {
+    sum += element;
+  });
+  return sum;
+};
+
+console.log(addNumber(2, 3, 5, 7)); //op : 17
+console.log(addNumber(...newArr)); // here the arguments are picked using spread operator, and not rest pattern.
+
+/*
+Short circuiting (&&, ||)
+Can use any data type, return any data type.
+*/
+console.log(3 || "Jonas");
+console.log("" || "Jonas");
+console.log(true || 0);
+console.log(undefined || null);
+console.log(null || undefined);
+
+restaurant.numGuests = 23;
+// const guests = restaurant.numGuests
+//   ? restaurant.numGuests
+//   : "restaurant guests count not defined";
+let guests = restaurant.numGuests || "restaurant guests count not defined";
+console.log(guests);
+
+console.log(3 && "Jonas");
+console.log("" && "Jonas");
+console.log(true && 0);
+console.log(undefined && null);
+console.log(null && undefined);
+
+// if (restaurant.orderDelivery) {
+//   restaurant.orderDelivery("14:00", "27B KP", 1, 0);
+// }
+restaurant.orderDelivery &&
+  restaurant.orderDelivery({
+    time: "14:00",
+    address: "27B KP",
+    starterIdx: 1,
+    mainIdx: 0,
+  });
+
+/*
+Nullish coalescing operator (ES6) ??
+works with the idea of nullish values and not falsy values.
+*/
+restaurant.numGuests = 0;
+guests = restaurant.numGuests || "restaurant guests count not defined";
+console.log(guests); // op: restaurant guests count not defined
+const correctGuests =
+  restaurant.numGuests ?? "restaurant guests count not defined";
+console.log(correctGuests); // op : 0
+
+/*
+Logical assignment operator
+*/
+restaurant.numGuests = 0;
+// restaurant.numGuests = restaurant.numGuests || 23;
+restaurant.numGuests ||= 23; // OR assignment operator
+console.log(restaurant.numGuests);
+restaurant.numGuests &&= 100; // AND assignment operator
+console.log(restaurant.numGuests);
+
+restaurant.numGuests = 23;
+// restaurant.numGuests = restaurant.numGuests || 23;
+restaurant.numGuests ||= 0; // OR assignment operators
+console.log(restaurant.numGuests);
+restaurant.numGuests &&= 0; // AND assignment operator
+console.log(restaurant.numGuests);
+
+restaurant.numGuests = 0;
+// restaurant.numGuests = restaurant.numGuests || 23;
+restaurant.numGuests ??= 23; // nullish coalescing assignment operators
+console.log(restaurant.numGuests);
