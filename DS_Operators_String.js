@@ -248,3 +248,168 @@ restaurant.numGuests = 0;
 // restaurant.numGuests = restaurant.numGuests || 23;
 restaurant.numGuests ??= 23; // nullish coalescing assignment operators
 console.log(restaurant.numGuests);
+
+/*
+Looping Arrays (for-of loop)
+*/
+
+for (const item of joinedArr) console.log(item);
+
+for (const [idx, item] of joinedArr.entries()) {
+  console.log(`${idx} : ${item}`);
+}
+
+/*
+Enhanced Object Literals (ES6)
+*/
+const address = "19 KP Houston TX";
+// const restaurant2 = {
+//   name: "Punjabi Tadka",
+//   address: address,
+// };
+const [day1, day2, day3] = ["monday", "wednessday", "friday"];
+let restaurant2 = {
+  name: "Punjabi Tadka",
+  // ES6 enhanced object literals
+  address,
+  // printHello: function (custName) {
+  //   console.log(`Hello ${custName} from Punjabi tadka`);
+  // },
+
+  // ES6 enhanced object literals (functions)
+  printHello(custName) {
+    console.log(`Hello ${custName} from Punjabi tadka`);
+  },
+
+  // ES6 enhanced object literals (keys/properties)
+  [day1]: "Dal Tadka", // monday: "Dal Tadka",
+  [day2]: "Rajma", // wednessday: "Rajma",
+  [day3]: "Chole Bhature",
+};
+// console.log(restaurant2);
+console.log(restaurant2);
+restaurant2.printHello("Ankit");
+
+/*
+optional chaining (?)
+works on the concept of nullish values and not falsy values.
+*/
+const nullVariable = null;
+//console.log(restaurant2.openingHours.mon); //TypeError: restaurant2.openingHours is undefined
+console.log(restaurant2.openingHours?.mon); // undefined
+console.log(restaurant2.openingHours?.mon?.open); // undefined
+console.log(nullVariable?.somevariable); // undefined
+// can be used for methods as well
+restaurant2.printHello?.("Ankit");
+console.log(nullVariable?.someMethod?.()); // op: undefined
+// can be used for Arrays
+console.log(joinedArr[100]?.includes("Ankit")); // op: undefined
+
+/*
+Looping objects (Keys, Values and Entries)
+*/
+
+for (const day of Object.keys(openingHours)) {
+  console.log(day);
+}
+
+for (const { open, close } of Object.values(openingHours)) {
+  console.log(open, close);
+}
+
+for (const [day, { open, close }] of Object.entries(openingHours)) {
+  console.log(day, open, close);
+}
+
+/*
+Sets (ES6)
+unique values, can't have duplicates
+there are no key-value pairs.
+there is no indexing as well.
+they are iterables, so we can loop over them.
+*/
+
+const orderedSet = new Set([
+  "Pizza",
+  "Pasta",
+  "Pizza",
+  "Pizza",
+  "Pasta",
+  "Pasta",
+  "Rissoto",
+]);
+
+console.log(new Set("Ankit")); // [ "A", "n", "k", "i", "t" ]
+
+console.log(orderedSet); // [ "Pizza", "Pasta", "Rissoto" ]
+
+console.log(orderedSet.size); // 3
+console.log(orderedSet.has("Pizza")); // true
+console.log(orderedSet.has("Bread")); // false
+
+orderedSet.add("Garlic Bread");
+orderedSet.delete("Rissoto");
+console.log(orderedSet); // [ "Pizza", "Pasta", "Garlic Bread" ]
+
+// orderedSet.clear();
+// console.log(orderedSet); // []
+
+for (const order of orderedSet) console.log(order);
+
+// creating an array of unique elements
+const staff = [
+  "waiter",
+  "chef",
+  "manager",
+  "chef",
+  "waiter",
+  "manager",
+  "manager",
+  "waiter",
+];
+const uniqueStaff = [...new Set(staff)];
+console.log(uniqueStaff); // Array(3) [ "waiter", "chef", "manager" ]
+
+/*
+Maps(ES6)
+key-value pairs
+Unlike objects, in maps keys can be of any type
+*/
+
+restaurant2 = new Map();
+restaurant2.set(1, "19 KP");
+restaurant2.set(2, "27B KP");
+restaurant2
+  .set("menu", ["roti", "sabzi", "daal", "chawal"])
+  .set("name", "dhabaa");
+console.log(restaurant2); //Map(4) { 1 → "19 KP", 2 → "27B KP", menu → (4) […], name → "dhabaa" }
+
+console.log(restaurant2.get("1")); //undefined
+console.log(restaurant2.get(1)); // 19 KP
+console.log(restaurant2.has("order")); // false
+restaurant2.delete("menu");
+console.log(restaurant2); // Map(3) { 1 → "19 KP", 2 → "27B KP", name → "dhabaa" }
+console.log(restaurant2.size); // 3
+restaurant2.clear();
+console.log(restaurant2); // Map(0)
+
+// convert object to map
+// Map is kind of array of arrays, so we can just use object.entries() method to create
+// a map.
+
+const mapFromObject = new Map(Object.entries(openingHours));
+console.log(mapFromObject); // Map(3) { thu → {…}, fri → {…}, sat → {…} }
+const mapFromArrayOfArrays = new Map([
+  ["question", "What is your name?"],
+  ["answer", "Ankit"],
+  ["question2", "What is your brother's name?"],
+  ["answer2", "Saksham"],
+]);
+console.log(mapFromArrayOfArrays); // Map(4) { question → "What is your name?", answer → "Ankit", question2 → "What is your name?", answer2 → "Saksham" }
+
+// Maps are iterables, so we can loop over them using for-of loop
+for (const [key, value] of mapFromArrayOfArrays) {
+  console.log(
+    key.includes("question") ? `Question : ${value}` : `Answer : ${value}`
+  );
+}
