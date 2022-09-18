@@ -81,7 +81,7 @@ Destructuring of objects
 */
 
 // by directly using the property names
-const { name, openingHours, categories } = restaurant;
+let { name, openingHours, categories } = restaurant;
 console.log(name, openingHours, categories);
 
 // by giving alias names
@@ -413,3 +413,77 @@ for (const [key, value] of mapFromArrayOfArrays) {
     key.includes("question") ? `Question : ${value}` : `Answer : ${value}`
   );
 }
+
+/*
+Working with Strings in JS
+
+Whenever we call any method on string primitive, JS automatically converts that into String Object, and later when operation is done, the object is converted back to string primitive.
+ */
+
+const plane = "A320";
+const airline = "Qatar Airways";
+
+console.log(plane[0]); // A
+console.log("A320"[0]); // A
+
+console.log(plane.length); // 4
+console.log("A320".length); // 4
+
+// to get the first appearance index use indexOf, otherwise use lastIndexOf.
+console.log(plane.indexOf("0")); // 3
+console.log("A320".indexOf("0")); // 3
+console.log(plane.indexOf("1")); // -1
+console.log("A320".indexOf("1")); // -1
+console.log(plane.indexOf("A320")); // 0
+console.log("A320".indexOf("a320")); // -1 (because this is case sensitive)
+
+console.log(airline.slice(5)); //  Airways
+console.log(airline.slice(5, 9)); //  Air
+console.log(airline.slice(0, airline.indexOf(" "))); //Qatar
+
+// to get the last character of any string
+console.log(airline.slice(-1));
+
+// string object v/s. string primitive
+console.log(typeof airline); // string
+console.log(typeof new String(airline)); // object
+console.log(typeof airline.slice(-1)); // string
+console.log(typeof new String(airline).slice(-1)); // string
+
+console.log(airline.toUpperCase()); // QATAR AIRWAYS
+console.log(airline.toLowerCase()); // qatar airways
+
+let day12 = day1;
+console.log(day12); // monday
+day12 = day12.slice(0, 1).toUpperCase() + day12.slice(1).toLowerCase();
+console.log(day12); // Monday
+
+const correctEmail = "hello@ankit.com";
+const userInputEmail = "   HeLLo@Ankit.COM  ";
+if (userInputEmail.toLowerCase().trim() === correctEmail)
+  console.log("LoggedIn");
+
+const strOriginal = "Ankit is Awesome. Ankit is great";
+console.log(strOriginal.replace("Ankit", "JS")); // replaces only the first occurence. // op : JS is Awesome. Ankit is great
+console.log(strOriginal.replaceAll("Ankit", "JS")); //op: JS is Awesome. JS is great
+
+console.log(strOriginal.includes("Ankit")); // true
+console.log(strOriginal.startsWith("Ankit")); // true
+console.log(strOriginal.endsWith("great")); // true
+
+console.log(strOriginal.split(" ")); // Array(6) [ "Ankit", "is", "Awesome.", "Ankit", "is", "great" ]
+
+let fullName = "Ankit Tripathi";
+const [firstName, lastName] = fullName.split(" ");
+name = ["Mr.", firstName, lastName].join(" "); // join is opposite of split.
+console.log(name); // Mr. Ankit Tripathi
+
+// adding padding to String
+console.log(fullName.padStart(25, "+")); // 25 represents the final length of the String
+fullName = "Saksham Tripathi";
+console.log(fullName.padStart(25, "+"));
+
+const creditCardNumber = "5454545454545454";
+console.log(creditCardNumber.slice(-3).padStart(creditCardNumber.length, "X")); // op : XXXXXXXXXXXXX454
+console.log("Attention!! Bad Weather!!".repeat(25));
+// Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!Attention!! Bad Weather!!
