@@ -46,38 +46,21 @@ const tempFuncBind = tempFunc.bind(this);
 //   console.log(score0El);
 // };
 
-// const setScore = function () {
-//   console.log('------------------initial conditions-------------------');
-//   console.log('score0 :' + score0);
-//   console.log('currentScore0 :' + currentScore0);
-//   console.log('score0El :' + score0El);
-//   console.log('score0El.textContent :' + score0El.textContent);
-//   console.log('currentScore0El :' + currentScore0El);
-//   console.log('currentScore0El.textContent :' + currentScore0El.textContent);
-//   console.log('score1 :' + score1);
-//   console.log('currentScore1 :' + currentScore1);
-//   console.log(score1El);
-//   console.log('score1El.textContent :' + score1El.textContent);
-//   console.log(currentScore1El);
-//   console.log('currentScore1El.textContent :' + currentScore1El.textContent);
-//   score0El.textContent = score0;
-//   score1El.textContent = score1;
-//   currentScore0El.textContent = currentScore0;
-//   currentScore0El.textContent = currentScore1;
-//   console.log('------------------------After changes---------------------');
-//   console.log('score0 :' + score0);
-//   console.log('currentScore0 :' + currentScore0);
-//   console.log('score0El :' + score0El);
-//   console.log('score0El.textContent :' + score0El.textContent);
-//   console.log('currentScore0El :' + currentScore0El);
-//   console.log('currentScore0El.textContent :' + currentScore0El.textContent);
-//   console.log('score1 :' + score1);
-//   console.log('currentScore1 :' + currentScore1);
-//   console.log('score1El :' + score1El);
-//   console.log('score1El.textContent :' + score1El.textContent);
-//   console.log('currentScore1El :' + currentScore1El);
-//   console.log('currentScore1El.textContent :' + currentScore1El.textContent);
-// };
+const setScore = function (
+  score0El,
+  score1El,
+  currentScore0El,
+  currentScore1El,
+  score0,
+  score1,
+  currentScore0,
+  currentScore1
+) {
+  score0El.textContent = score0;
+  score1El.textContent = score1;
+  currentScore0El.textContent = currentScore0;
+  currentScore1El.textContent = currentScore1;
+};
 // setScore();
 // console.log(score0);
 
@@ -123,11 +106,21 @@ btnRoll.addEventListener('click', function () {
       currentScore1 += dice;
     }
   }
-  // setScore();
-  score0El.textContent = score0;
-  score1El.textContent = score1;
-  currentScore0El.textContent = currentScore0;
-  currentScore1El.textContent = currentScore1;
+  setScore.call(
+    null,
+    score0El,
+    score1El,
+    currentScore0El,
+    currentScore1El,
+    score0,
+    score1,
+    currentScore0,
+    currentScore1
+  );
+  // score0El.textContent = score0;
+  // score1El.textContent = score1;
+  // currentScore0El.textContent = currentScore0;
+  // currentScore1El.textContent = currentScore1;
 });
 
 btnHold.addEventListener('click', function () {
@@ -168,11 +161,21 @@ btnHold.addEventListener('click', function () {
     }
   }
   // setScore();
-
-  score0El.textContent = score0;
-  score1El.textContent = score1;
-  currentScore0El.textContent = currentScore0;
-  currentScore1El.textContent = currentScore1;
+  setScore.call(
+    null,
+    score0El,
+    score1El,
+    currentScore0El,
+    currentScore1El,
+    score0,
+    score1,
+    currentScore0,
+    currentScore1
+  );
+  // score0El.textContent = score0;
+  // score1El.textContent = score1;
+  // currentScore0El.textContent = currentScore0;
+  // currentScore1El.textContent = currentScore1;
   isPlayer1 = !isPlayer1;
 });
 
@@ -195,10 +198,21 @@ btnNew.addEventListener('click', function () {
 
   // setScore();
 
-  score0El.textContent = score0;
-  score1El.textContent = score1;
-  currentScore0El.textContent = currentScore0;
-  currentScore1El.textContent = currentScore1;
+  // score0El.textContent = score0;
+  // score1El.textContent = score1;
+  // currentScore0El.textContent = currentScore0;
+  // currentScore1El.textContent = currentScore1;
+  setScore.call(
+    null,
+    score0El,
+    score1El,
+    currentScore0El,
+    currentScore1El,
+    score0,
+    score1,
+    currentScore0,
+    currentScore1
+  );
 
   diceEl.classList.add('hidden');
 });
