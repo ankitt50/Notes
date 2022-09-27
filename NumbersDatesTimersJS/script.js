@@ -387,3 +387,52 @@ console.log(decimalNum.toFixed(1)); //24.0
 let decimalNum = -23.9655;
 console.log(decimalNum.toFixed(1)); //-24.0
 */
+
+// Remainder operator
+/*
+const isEven = n => n % 2 === 0;
+console.log(isEven(23)); //false
+console.log(isEven(234)); // true
+*/
+
+/*
+labelBalance.addEventListener('click', function () {
+  [...document.querySelectorAll('.movements__row')].forEach(function (
+    row,
+    idx
+  ) {
+    if (idx % 2 === 0) row.style.backgroundColor = 'orangered';
+    if (idx % 3 === 0) row.style.backgroundColor = 'blue';
+  });
+});
+*/
+
+/*
+// Numeric separator
+// should be between numbers only, can't be at the end of number or start of number.
+// also can't be between a number and decimal point.
+const earthDiameter = 287_460_000_000;
+console.log(earthDiameter); //287460000000
+console.log(287_486 === 287486); //true
+const decimalNum = 1.2_2;
+console.log(decimalNum); //1.22
+//decimalNum = 1_.22; // SyntaxError: underscore can appear only between digits, not after the last digit in a number
+*/
+
+// BigInt (ES6)
+console.log(Number.MAX_SAFE_INTEGER); // 9007199254740991 (The value of the largest integer in JS i.e. 2^53 - 1 )
+
+let bigIntNum = 9007199254740991n;
+bigIntNum += bigIntNum;
+console.log(bigIntNum); //18014398509481982n
+bigIntNum *= 2n;
+// don't mix bigInt with other numbers during operations. Except when using comparison operators like equality and greater than.
+// bigIntNum *= 2; //TypeError: can't convert BigInt to number
+console.log(bigIntNum); //36028797018963964n
+console.log(bigIntNum === 20000000); // false
+console.log(bigIntNum > 2000000000); // true
+console.log(20n == 20); // true
+console.log(20n === 20); // false
+
+// The Math operators don't work for BigInt
+//console.log(Math.sqrt(16n)); //TypeError: can't convert BigInt to number
