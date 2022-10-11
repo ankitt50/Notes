@@ -182,6 +182,32 @@ const createUsernames = function (accs) {
 };
 createUsernames(accounts);
 
+let timerForLogout;
+let timeOutInterval;
+
+const startTimerForLogout = function () {
+  if (timerForLogout) {
+    clearInterval(timerForLogout);
+  }
+  timeOutInterval = 30;
+  const min = String(Math.trunc(timeOutInterval / 60)).padStart(2, '0');
+  const secs = String(Math.trunc(timeOutInterval % 60)).padStart(2, '0');
+  labelTimer.textContent = `${min}:${secs}`;
+  timeOutInterval--;
+
+  timerForLogout = setInterval(function () {
+    if (timeOutInterval === 0) {
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = 'Log in to get started';
+      clearInterval(timerForLogout);
+    }
+    const min = String(Math.trunc(timeOutInterval / 60)).padStart(2, '0');
+    const secs = String(Math.trunc(timeOutInterval % 60)).padStart(2, '0');
+    labelTimer.textContent = `${min}:${secs}`;
+    timeOutInterval--;
+  }, 1000);
+};
+
 const updateUI = function (acc) {
   // Display movements
   displayMovements(acc.movements, false, acc);
@@ -245,6 +271,8 @@ btnLogin.addEventListener('click', function (e) {
       currentAccount.locale,
       options
     ).format(currDate);
+
+    startTimerForLogout();
   }
 });
 
@@ -270,6 +298,8 @@ btnTransfer.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+
+    startTimerForLogout();
   }
 });
 
@@ -279,13 +309,23 @@ btnLoan.addEventListener('click', function (e) {
   const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    /*
     // Add movement
     currentAccount.movements.push(amount);
     currentAccount.movementsDates.push(new Date().toISOString());
     // Update UI
     updateUI(currentAccount);
+    */
+    setTimeout(function () {
+      // Add movement
+      currentAccount.movements.push(amount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      // Update UI
+      updateUI(currentAccount);
+    }, 2500);
   }
   inputLoanAmount.value = '';
+  startTimerForLogout();
 });
 
 btnClose.addEventListener('click', function (e) {
@@ -309,6 +349,8 @@ btnClose.addEventListener('click', function (e) {
   }
 
   inputCloseUsername.value = inputClosePin.value = '';
+  // startTimerForLogout();
+  clearInterval(timerForLogout);
 });
 
 let sorted = false;
@@ -316,6 +358,7 @@ btnSort.addEventListener('click', function (e) {
   e.preventDefault();
   displayMovements(currentAccount.movements, !sorted, currentAccount);
   sorted = !sorted;
+  startTimerForLogout();
 });
 
 /////////////////////////////////////////////////
@@ -657,4 +700,57 @@ console.log(new Intl.NumberFormat('en-US', options).format(numb)); //3,005,009 m
 console.log(new Intl.NumberFormat('en-US', options2).format(numb)); //3,005,009°C
 console.log(new Intl.NumberFormat('en-US', options3).format(numb)); //300,500,900%
 console.log(new Intl.NumberFormat('en-US', options4).format(numb)); //₹3,005,009.00
+*/
+
+/* Timers in JS (setTimeout and setInterval) */
+/*
+setTimeout(() => {
+  console.log('Please take your pizza.');
+}, 3000); // callbcak function executed after 3 seconds
+console.log('Waiting.....'); // this gets executed first and then setTimeout callback function is executed.
+*/
+
+/*
+// we can also pass arguments to the callback function.
+setTimeout(
+  (ing1, ing2) => {
+    console.log(`Please take your pizza with ${ing1} and ${ing2}`);
+  },
+  3000,
+  'olives',
+  'mushrooms'
+); // callback function executed after 3 seconds
+console.log('Waiting.....'); // this gets executed first and then setTimeout callback function is executed.
+*/
+
+// we can also clear the timeout before it is executed.
+/*
+const ingredients = ['olives', 'spinach'];
+const pizzaTimeout = setTimeout(
+  (ing1, ing2) => {
+    console.log(`Please take your pizza with ${ing1} and ${ing2}`);
+  },
+  3000,
+  ...ingredients
+);
+console.log('Waiting.....');
+if (ingredients.includes('spinach')) clearTimeout(pizzaTimeout);
+
+const ingredients2 = ['olives', 'mushroom'];
+const pizzaTimeout2 = setTimeout(
+  (ing1, ing2) => {
+    console.log(`Please take your pizza with ${ing1} and ${ing2}`);
+  },
+  3000,
+  ...ingredients2
+);
+console.log('Waiting.....');
+if (ingredients2.includes('spinach')) clearTimeout(pizzaTimeout2);
+*/
+
+// setInterval is used to repeat the execution after a certain interval.
+/*
+setInterval(function () {
+  console.log(new Date());
+}, 2000);
 */
