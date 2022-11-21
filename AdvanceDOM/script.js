@@ -132,6 +132,7 @@ document
   });
   */
 
+/*
 // Styles
 
 const message = document.createElement('div');
@@ -168,9 +169,216 @@ logo.alt = 'Beautiful minimalistic logo';
 console.log(logo.getAttribute('designer'));
 logo.setAttribute('company', 'Bankist');
 
-console.log(logo.src); // http://127.0.0.1:5500/AdvanceDOM/img/logo.png
-console.log(logo.getAttribute('src')); // img/logo.png
+console.log(logo.src); // OP:  http://127.0.0.1:5500/AdvanceDOM/img/logo.png
+console.log(logo.getAttribute('src')); //OP :  img/logo.png
 
 const link = document.querySelector('.nav__link--btn');
-console.log(link.href); //http://127.0.0.1:5500/AdvanceDOM/index.html#
-console.log(link.getAttribute('href')); // #
+console.log(link.href); //OP : http://127.0.0.1:5500/AdvanceDOM/index.html#
+console.log(link.getAttribute('href')); // OP :  #
+
+// Data Attributes
+// start with data keyword
+// ex :
+/*
+<img
+  ......
+  .....
+  data-version-number="3.0"
+/>
+*/
+/*
+console.log(logo.dataset.versionNumber); // OP : 3.0
+// use Camel case to access the data attribute.
+
+// classes
+logo.classList.add('class1', 'class2');
+logo.classList.remove('class1', 'class2');
+logo.classList.toggle('class1');
+logo.classList.contains('class2');
+
+// another alternative way : But don't use this, as it overrides all the existing classes.
+// logo.className = 'class1 class2';
+*/
+
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', function (e) {
+  /*
+  const s1Coord = section1.getBoundingClientRect(); // getBoundingClientRect returns the coordinate w.r.t the viewport
+  // So, it result keeps changing when we scroll up-down/left-right on the screen.
+  console.log(s1Coord);
+  console.log(e.target.getBoundingClientRect());
+  console.log('Current Scroll (X/Y) : ', window.scrollX, window.scrollY);
+  console.log(
+    'height/width of the viewport',
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
+  */
+  // scrolling
+  /*
+  const s1Coord = section1.getBoundingClientRect();
+  window.scrollTo(s1Coord.left + window.scrollX, s1Coord.top + window.scrollY); // we have to add the current scroll to get the position of the section w.r.t to the actual html page. getBoundingClientRect just returns the position w.r.t the view port.
+  */
+  /*
+  const s1Coord = section1.getBoundingClientRect();
+  window.scrollTo({
+    left: s1Coord.left + window.scrollX,
+    top: s1Coord.top + window.scrollY,
+    behavior: 'smooth',
+  });
+  */
+  section1.scrollIntoView({ behavior: 'smooth' }); // none of the above calculations are required, if we are using this scrollIntoView method.
+});
+
+/* implementing the navigation click event functionlaity
+
+Alternative 1 :
+
+document.querySelectorAll('.nav__link').forEach(function (el) {
+  el.addEventListener('click', function (e) {
+    e.preventDefault(); // in the html, href attribute is defined. So, by default the page will get scrolled to the href section. But since we want smooth scrolling, so we will prevent the default behaviour.
+
+    const id = this.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  });
+});
+*/
+
+/* implementing the navigation click event functionlaity
+
+Alternative 2 :
+It is a better way because in the first approach we are creating multiple copies of the callback event handler function (bcoz of the foreach loop)
+*/
+
+// 1. Add event listener to common parent element
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  //console.log(e.target);
+  // 2. Determine What element originated the event.
+  if (e.target.classList.contains('nav__link')) {
+    //console.log('LINK');
+    e.preventDefault();
+    const id = e.target.getAttribute('href');
+    //console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+  // } else {
+  //   console.log('Parent NAV EL');
+  // }
+});
+
+// Events in JS
+// https://developer.mozilla.org/en-US/docs/Web/Events
+
+/*
+const headingH1 = document.querySelector('h1');
+headingH1.addEventListener('mouseenter', function () {
+  alert('hovering the mouse over the heading!!');
+});
+*/
+
+/*
+Alternative old school way
+const headingH1 = document.querySelector('h1');
+headingH1.onmouseenter = function () {
+  alert('hovering the mouse over the heading!!');
+};
+*/
+
+/*
+// Using addEventListener gives additional advantage that we can remove the eventhandler after we have executed the function once.
+const headingH1 = document.querySelector('h1');
+const alertOnheading = function () {
+  alert('hovering the mouse over the heading!!');
+  // removing this means, we are showing this alert only once.
+  headingH1.removeEventListener('mouseenter', alertOnheading);
+};
+headingH1.addEventListener('mouseenter', alertOnheading);
+*/
+
+/*
+// Event Propagation : Bubbling and Capturing
+// Whenever any event occurs, the event is first generated at the root of the document and not at the target element level. The event is then passes through all the parent element of the target element, before it actually reaches the target element, this is called target phase. When the event reaches the target element, it is handled by the eventlisteners. After this the event again travels back to the root element, this is called bubbling phase. During the bubbling phase, it is as if the event occured at those parent elements as well. So, if we are handling the event in the parent element as well, then our same event will be handled twice. When the event is handled in the parent elements in the bubbling phase, the target still remains the same.
+// Event handlers by default captures only the bubbling phase. But by setting the third parameter as 'true' in the addEventListener function, we can handle events in the target phase as well. But generally it is not that useful.
+
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('Link', e.target, e.currentTarget);
+  // OP: Link
+  // OP: <a class="nav__link" href="#section--1" style="background-color: rgb(15, 17, 176);">
+  // OP: <a class="nav__link" href="#section--1" style="background-color: rgb(15, 17, 176);"
+
+  console.log(e.currentTarget === this); // true
+
+  /*
+  // stop event propagation
+  e.stopPropagation();
+  */
+/*
+});
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('Container', e.target, e.currentTarget);
+  /*
+  OP :
+  Container 
+  <a class="nav__link" href="#section--1" style="background-color: rgb(15, 17, 176);"> 
+  <ul class="nav__links" style="background-color: rgb(217, 126, 101);"></ul>
+*/
+/*
+  console.log(e.currentTarget === this); // true
+});
+document.querySelector('.nav').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('NAV', e.target, e.currentTarget);
+  /*
+  OP :
+  NAV 
+<a class="nav__link" href="#section--1" style="background-color: rgb(15, 17, 176);"> 
+<nav class="nav" style="background-color: rgb(197, 56, 62);">
+*/
+/*
+  console.log(e.currentTarget === this); // true
+});
+*/
+
+/*
+
+*/
+
+/*
+// DOM Traversing
+
+
+const h1 = document.querySelector('h1');
+console.log(h1.querySelectorAll('.highlight'));
+
+// Going downwards : child
+console.log(h1.childNodes); // Returns the children. returns a nodelist
+console.log(h1.children); // Returns the child elements. returns a HTMLCollection
+// h1.firstElementChild.style.color = 'white';
+// h1.lastElementChild.style.color = 'orangered';
+
+// Going upwards : parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+//h1.closest('.header').style.background = 'var(--gradient-secondary)'; // "closest" method returns the first (starting at element) inclusive ancestor/parent that matches selectors, and null otherwise.
+
+// Going sideways : siblings
+console.log(h1.previousElementSibling); // Returns the first preceding sibling that is an element, and null otherwise.
+console.log(h1.previousSibling); // returns HTML element
+
+console.log(h1.nextElementSibling);
+console.log(h1.nextSibling); // returns HTML element
+
+console.log(h1.parentElement.children);
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) el.style.transform = 'scale(0.5)';
+});
+*/
