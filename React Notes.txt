@@ -1751,9 +1751,42 @@ React - It is a JS library to build User Interfaces
 ****************************************************************************************************************** 
 
 		--> npm install react-router-dom@5
+
+
+
+-- one way of defining the routes
+
+	App.js file ::
+		import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+		import HomePage from './pages/home';
+
+		const router = createBrowserRouter([
+		{page: '/', element: <HomePage/>}
+		]);
+
+		function App() {
+		return <RouterProvider router={router} />;
+		}
+
+		export default App;
+
+
+-- to navigate the user to one of the routes, don't use anchor tag... Because it sends an http request to server and everything (js, html, css, etc.) are agin reloaded. This defeates the whole purpose of SPA.
+-- instead use 'Link' provided by react-router-dom.
+
+
+	Home.js file ::
+		import {Link} from react-router-dom;
+		function Homepage() {
+		return <>
+			<h1>Home Page</h1>
+			<p>Go to <Link to="/products">products page</Link></p>
+		       <>;
 		
+		}
 		
-		App.js File :
+	
+	App.js File :
 		
 		import { Route, Switch, Redirect } from 'react-router-dom';
 		
