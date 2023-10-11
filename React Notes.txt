@@ -1784,8 +1784,58 @@ React - It is a JS library to build User Interfaces
 		       <>;
 		
 		}
-		
-	
+
+--  Layouts and Nested Routes
+-- 	Below example is to create a navigation bar on top of all the pages/routes.
+
+	App.js file :: 
+
+			import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+			
+			const router = createBrowserRouter([
+			  {
+			    path: '/',
+			    element: <RootLayout />,
+			    children: [
+			      { path: '/', element: <HomePage /> },
+			      { path: '/products', element: <ProductsPage /> },
+			    ],
+			  }
+			]);
+			
+			function App() {
+			  return <RouterProvider router={router} />;
+			}
+			
+			export default App;
+
+	Root.js file ::
+
+			import { Outlet } from 'react-router-dom';
+			
+			import MainNavigation from '../components/MainNavigation';
+			import classes from './Root.module.css';
+			
+			function RootLayout() {
+			  return (
+			    <>
+			      <MainNavigation /> // this is the navigation bar that has to be included on all pages/routes
+			      <main className={classes.content}>
+			        <Outlet /> // outlet marks the place where the children needs to be inserted
+			      </main>
+			    </>
+			  );
+			}
+			
+			export default RootLayout;
+					
+
+
+
+
+
+
+
 	App.js File :
 		
 		import { Route, Switch, Redirect } from 'react-router-dom';
