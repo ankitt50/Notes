@@ -1828,6 +1828,30 @@ React - It is a JS library to build User Interfaces
 			}
 			
 			export default RootLayout;
+
+-- Addding error page
+	
+	App.js file ::
+
+			...
+			...
+			...
+
+			const router = createBrowserRouter([
+			  {
+			    path: '/',
+			    element: <RootLayout />,
+			    errorElement: <ErrorPage />,
+			    children: [
+			      { path: '/', element: <HomePage /> },
+			      { path: '/products', element: <ProductsPage /> },
+			    ],
+			  }
+			]);
+			
+			...
+			...
+			...
 					
 
 
