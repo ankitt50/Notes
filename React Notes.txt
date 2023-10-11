@@ -1852,6 +1852,51 @@ React - It is a JS library to build User Interfaces
 			...
 			...
 			...
+
+-- If want to show the clicked links in different style, then use NavLink and not Link... In classname instead of providing a class, provide a function which provides classes based on condition whether the link is active or not....
+
+			     ...
+			     <NavLink to="/products" className={({ isActive }) => isActive ? classes.active : undefined}>
+		              Products
+		            </NavLink>
+			     ....
+// added end attribute, so that this navlink is not always active.. and its active only if the path matches exactly to '/'
+			      <NavLink to="/" className={({ isActive }) => isActive ? classes.active : undefined} end>
+		              Products
+		            </NavLink>
+
+-- to navigate programmatically
+
+			import { useNavigate } from 'react-router-dom';
+			
+			...
+			...
+			const navigate = useNavigate();
+			....
+			navigate('/products');
+			...
+
+-- dynamic routes (ex- having path params)
+-- use colon and then the path param
+
+			...
+			...
+			const router = createBrowserRouter([
+			  {
+			    path: '/',
+			    element: <RootLayout />,
+			    errorElement: <ErrorPage />,
+			    children: [
+			      { path: '/', element: <HomePage /> },
+			      { path: '/products', element: <ProductsPage /> },
+			      { path: '/products/:productId', element: <ProductDetailPage /> }
+			    ],
+			  }
+			]);
+			..
+			..
+
+	
 					
 
 
