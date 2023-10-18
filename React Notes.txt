@@ -1913,7 +1913,19 @@ React - It is a JS library to build User Interfaces
 			}
 			
 			export default ProductDetailPage;
-	
+
+
+-- Absolute vs. Relative paths
+	-- if path definition starts with '/', then its an absolute path. It will be appended to the url of the main app/ main domain name and not to the currently active 	   path/route.
+	-- if a path doesn't start with '/', then its a relative path. It will be appended to the parent wrapper route.
+	-- if working with 'Link' component and relative paths, then we can leverage 'relative' attribute of the 'Link' component. This attribute can be assigned 		  'path'/'route' as value. When 'path' is used then relative to the current path(in url), else if 'route' is used, then its relative to the parent route (defined 
+           in the route definition in the createBrowserRouter)
+
+
+-- index routes
+	-- if for the parent route definition, we want to load any component, then we can either define the path
+
+
 
 	
 					
