@@ -1754,7 +1754,7 @@ React - It is a JS library to build User Interfaces
 
 
 
--- one way of defining the routes
+-- Newer Version of React Router DOM (v6) --- a new way of defining the routes
 
 	App.js file ::
 		import {createBrowserRouter, RouterProvider} from 'react-router-dom';
@@ -1976,6 +1976,121 @@ React - It is a JS library to build User Interfaces
 		}
 		
 		export default EventsRootLayout;
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------- More Advance features of React Router DOM ----------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- To fetch data, we can use react router loader. Earlier we have seen we can use useEffect for the same purpose. With React Router loader, we start fetching the data as 
+   soon as the react router starts routing/navigating to the new route. The router will wait for the data to be loaded, before it actually starts rendering the page.
+-- We can add the loader function in the route definition itself.
+-- To fetch/get the data returned by the loader function inside the component, we can use 'useLoaderData' hook by react-router-dom
+-- Even if your loader function id async and returns a promise, react-router-dom will check the return type and in the end return final data only.
+-- To fetch data using the 'useLoaderData' hook, we can call/use it even inside any lower-level/child route component. But it will not work on higher-level.
+-- Since the new page will not start rendering untill the data is fecthed by the loader function, the user will not see any feedback on the screen.
+   So, to show some loader/feedback to user, we can use 'useNavigation' hook. This hook will tell us the state of the current routing/navigation (i.e. 
+  idle/loading/submitting).
+
+
+	App.js file ::
+		import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+		import EventsPage, { loader as eventsLoader } from './pages/Events';
+		...
+		...
+		
+		const router = createBrowserRouter([
+		  {
+		    path: '/',
+		    element: <RootLayout />,
+		    children: [
+		      { index: true, element: <HomePage /> },
+		      {
+		        path: 'events',
+		        element: <EventsRootLayout />,
+		        children: [
+		          {
+		            index: true,
+		            element: <EventsPage />,
+		            loader: eventsLoader,
+		          },
+		          { path: ':eventId', element: <EventDetailPage /> },
+		          { path: 'new', element: <NewEventPage /> },
+		          { path: ':eventId/edit', element: <EditEventPage /> },
+		        ],
+		      },
+		    ],
+		  },
+		]);
+		
+		function App() {
+		  return <RouterProvider router={router} />;
+		}
+		
+		export default App;
+
+	Events.js file ::
+		import { useLoaderData } from 'react-router-dom';
+		...
+		...
+		
+		function EventsPage() {
+		  const events = useLoaderData();
+		
+		  return <EventsList events={events} />;
+		}
+		
+		export default EventsPage;
+
+		// Although the loader is used in the App.js file, it should be defined in the corresponding component file only..
+		export async function loader() {
+		  const response = await fetch('http://localhost:8080/events');
+		
+		  if (!response.ok) {
+		    // ...
+		  } else {
+		    const resData = await response.json();
+		    return resData.events;
+		  }
+		}
+
+	Root.js file ::
+		import { Outlet, useNavigation } from 'react-router-dom';
+		....
+		....
+		
+		function RootLayout() {
+		  const navigation = useNavigation();
+		
+		  return (
+		    <>
+		      <MainNavigation />
+		      <main>
+		         {navigation.state === 'loading' && <p>Loading...</p>} // this code checks the curent state of navigation, and shows the loader to user.
+		        <Outlet />
+		      </main>
+		    </>
+		  );
+		}
+		
+		export default RootLayout;
+
+-- We can even return Response object (built-in in modern browsers) from the loader function. So, there is no need to extract the data from the backend API response.
+   We can directly return the entire response object itself.
+-- Inside loader function, we can use any JS code. But, we can't use react hooks.
+
+	ex :
+		export async function loader() {
+		  const response = await fetch('http://localhost:8080/events');
+		
+		  if (!response.ok) {
+		    // ...
+		  } else {
+		    return response;
+		  }
+		}
+	
+
+
 
 
 
