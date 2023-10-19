@@ -2088,6 +2088,94 @@ React - It is a JS library to build User Interfaces
 		    return response;
 		  }
 		}
+
+-- To handle error status code sent by the API, we can directly throw error inside the loader function. Now, to handle this error, we can use 'errorElement' attribute
+   in the route definition. The component defined will be shown whenever there is any error in the route or any child-route (if child-route doesn't have its own 	 
+   errorElement)
+   When throwing, we can also throw an response object. That way, we can be more specific about the status code and the error message.
+   To get the thrown response object in the custom error page, we can use the 'useRouteError' hook.
+
+
+	App.js file ::
+		import { RouterProvider, createBrowserRouter } from 'react-router-dom';		
+		...
+		import EventDetailPage from './pages/EventDetail';
+		import EventsPage, { loader as eventsLoader } from './pages/Events';
+		...
+		...
+		
+		const router = createBrowserRouter([
+		  {
+		    path: '/',
+		    element: <RootLayout />,
+		    errorElement: <ErrorPage />,
+		    children: [
+		      ....
+		    ],
+		  },
+		]);
+		
+		function App() {
+		  return <RouterProvider router={router} />;
+		}
+		
+		export default App;
+
+
+	Loader function throwing response object (either directly, or using a json helper function) ::
+		export async function loader() {
+		  const response = await fetch('http://localhost:8080/events');
+		
+		  if (!response.ok) {
+		    // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
+		    //   status: 500,
+		    // });
+		    // for json helper function, import json from 'react-router-dom'
+		    throw json(
+		      { message: 'Could not fetch events.' },
+		      {
+		        status: 500,
+		      }
+		    );
+		  } else {
+		    return response;
+		  }
+		}
+
+
+	Error.js (Custom error page - useRouteError hook is used) ::
+		import { useRouteError } from 'react-router-dom';
+		...
+		...
+		function ErrorPage() {
+		  const error = useRouteError();
+		
+		  let title = 'An error occurred!';
+		  let message = 'Something went wrong!';
+
+		// we can access status, if we are throwing a response object.
+		  if (error.status === 500) {
+		    message = JSON.parse(error.data).message;
+		  }
+		
+		  if (error.status === 404) {
+		    title = 'Not found!';
+		    message = 'Could not find resource or page.';
+		  }
+		
+		  return (
+		    <>
+		      <MainNavigation />
+		      <PageContent title={title}>
+		        <p>{message}</p>
+		      </PageContent>
+		    </>
+		  );
+		}
+		
+		export default ErrorPage;
+	
+
 	
 
 
