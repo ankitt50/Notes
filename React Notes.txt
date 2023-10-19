@@ -1923,7 +1923,59 @@ React - It is a JS library to build User Interfaces
 
 
 -- index routes
-	-- if for the parent route definition, we want to load any component, then we can either define the path
+	-- if for the parent route definition, we want to load any component, then we can either define the path as empty, or we can set the index property to true.
+
+	App.js :: 
+
+		const router = createBrowserRouter([
+		  {
+		    path: '/',
+		    element: <RootLayout />,
+		    errorElement: <ErrorPage />,
+		    children: [
+		      { index: true, element: <HomePage /> },
+		      { path: 'products', element: <ProductsPage /> },
+		      { path: 'products/:productId', element: <ProductDetailPage /> }
+		    ],
+		  }
+		]);
+
+-- We can also add another (nested) layout route within the main layout route (ex: '/events' route inside '/' route)
+	App.js ::
+		const router = createBrowserRouter([
+		{
+		    path: '/',
+		    element: <RootLayout />,
+		    children: [
+		      { index: true, element: <HomePage /> },
+		      {
+		        path: 'events',
+		        element: <EventsRootLayout />,
+		        children: [
+		          { index: true, element: <EventsPage /> },
+		          { path: ':eventId', element: <EventDetailPage /> },
+		          { path: 'new', element: <NewEventPage /> },
+		          { path: ':eventId/edit', element: <EditEventPage /> },
+		        ],
+		      },
+		    ],
+		  },
+		]);
+
+	EventsRoot.js file ::
+		import { Outlet } from 'react-router-dom';
+		import EventsNavigation from '../components/EventsNavigation';
+		
+		function EventsRootLayout() {
+		  return (
+		    <>
+		      <EventsNavigation />
+		      <Outlet />
+		    </>
+		  );
+		}
+		
+		export default EventsRootLayout;
 
 
 
