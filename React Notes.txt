@@ -2174,6 +2174,74 @@ React - It is a JS library to build User Interfaces
 		}
 		
 		export default ErrorPage;
+
+-- react router when calling the loader function passes an object with two properties - request and params. These properties can be used in case of the dynamic routes.
+-- request property can be used to get url/query parameters, etc.
+-- params can be used to get path params.
+
+		export async function loader({request, params}) {
+		  const id = params.eventId;
+		  const response = await fetch('http://localhost:8080/events/' + id);
+		  if (!response.ok) {
+		    throw json({message: 'Could not fetch details for selected event.'}, {
+		      status: 500
+		    })
+		  } else {
+		    return response;
+		  }
+		}
+
+-- If we want to access data from a loader function which is not directly defined in that same route, but in any of the parent routes. Then instead of useLoaderData hook, 
+   we can use useRouteLoaderData hook... This hook works similar to the useLoaderData, but takes an additional argument 'route-id'.
+
+	App.js file ::
+		...
+		...
+		
+		const router = createBrowserRouter([
+		  {
+		    ...
+		    children: [
+		      { index: true, element: <HomePage /> },
+		      {
+		        ....
+		          {
+		            path: ':eventId',
+		            id: 'event-detail', // this same id needs to be passed in the useRouteLoaderData hook
+		            loader: eventDetailLoader,
+		            children: [
+		              {
+		                index: true,
+		                element: <EventDetailPage />,
+		              },
+		              { path: 'edit', element: <EditEventPage /> },
+		            ],
+		          },
+		          { path: 'new', element: <NewEventPage /> },
+		        ],
+		      },
+		    ],
+		  },
+		]);
+		
+		....
+		
+		export default App;
+
+	EditEvent.js file ::
+		import { useRouteLoaderData } from 'react-router-dom';
+		import EventForm from '../components/EventForm';
+		
+		function EditEventPage() {
+		  const data = useRouteLoaderData('event-detail');
+		
+		  return <EventForm event={data.event} />;
+		}
+		
+		export default EditEventPage;
+
+
+
 	
 
 	
