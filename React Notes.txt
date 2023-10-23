@@ -2439,6 +2439,192 @@ React - It is a JS library to build User Interfaces
 		  return redirect('/events');
 		}
 
+-- The 'Form' component always redirects to the route, whose action-fn we are calling from the 'Form' component's method attribute.
+-- But we don't wish to redirect, then we can use 'useFetcher' hook.
+	NewsletterSignup.js file ::
+		import { useEffect } from 'react';
+		import { useFetcher } from 'react-router-dom';
+		
+		import classes from './NewsletterSignup.module.css';
+		
+		function NewsletterSignup() {
+		  const fetcher = useFetcher();
+		  const { data, state } = fetcher;
+		
+		  useEffect(() => {
+		    if (state === 'idle' && data && data.message) {
+		      window.alert(data.message);
+		    }
+		  }, [data, state]);
+		
+		  return (
+			// here we are using fetcher.Form component instead of Form component
+		    <fetcher.Form
+		      method="post"
+		      action="/newsletter"
+		      className={classes.newsletter}
+		    >
+		      <input
+		        type="email"
+		        placeholder="Sign up for newsletter..."
+		        aria-label="Sign up for newsletter"
+		      />
+		      <button>Sign up</button>
+		    </fetcher.Form>
+		  );
+		}
+		
+		export default NewsletterSignup;
+
+-- If we want to defer loading, i.e. even if the data is not returned by the loader function, we still want to render the component. In these cases we can use
+   defer() fn.
+
+	Events.js file ::
+		import { Suspense } from 'react';
+		import { useLoaderData, json, defer, Await } from 'react-router-dom';
+		
+		import EventsList from '../components/EventsList';
+		
+		function EventsPage() {
+		  const { events } = useLoaderData();
+		
+		  return (
+		    <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
+		      <Await resolve={events}>
+		        {(loadedEvents) => <EventsList events={loadedEvents} />}
+		      </Await>
+		    </Suspense>
+		  );
+		}
+		
+		export default EventsPage;
+		
+		async function loadEvents() {
+		  const response = await fetch('http://localhost:8080/events');
+		
+		  if (!response.ok) {
+		    // return { isError: true, message: 'Could not fetch events.' };
+		    // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
+		    //   status: 500,
+		    // });
+		    throw json(
+		      { message: 'Could not fetch events.' },
+		      {
+		        status: 500,
+		      }
+		    );
+		  } else {
+		    // manually parse the response object, bcoz unlike normal loader function, in case of defered loader function, response isn't automatically parsed.
+		    const resData = await response.json();
+		    return resData.events;
+		  }
+		}
+		
+		export function loader() {
+		  return defer({
+		    events: loadEvents(),
+		  });
+		}
+
+-- If there are multiple fetch requests on any page's loading... and these requests gets data at different speeds, then we can defer these data on a single page separately
+   as well.
+
+	EventDetails.js file ::
+		import { Suspense } from 'react';
+		import {
+		  useRouteLoaderData,
+		  json,
+		  redirect,
+		  defer,
+		  Await,
+		} from 'react-router-dom';
+		
+		import EventItem from '../components/EventItem';
+		import EventsList from '../components/EventsList';
+		
+		function EventDetailPage() {
+		  const { event, events } = useRouteLoaderData('event-detail');
+		
+		  return (
+		    <>
+		      <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
+		        <Await resolve={event}>
+		          {(loadedEvent) => <EventItem event={loadedEvent} />}
+		        </Await>
+		      </Suspense>
+		      <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
+		        <Await resolve={events}>
+		          {(loadedEvents) => <EventsList events={loadedEvents} />}
+		        </Await>
+		      </Suspense>
+		    </>
+		  );
+		}
+		
+		export default EventDetailPage;
+		
+		async function loadEvent(id) {
+		  const response = await fetch('http://localhost:8080/events/' + id);
+		
+		  if (!response.ok) {
+		    throw json(
+		      { message: 'Could not fetch details for selected event.' },
+		      {
+		        status: 500,
+		      }
+		    );
+		  } else {
+		    const resData = await response.json();
+		    return resData.event;
+		  }
+		}
+		
+		async function loadEvents() {
+		  const response = await fetch('http://localhost:8080/events');
+		
+		  if (!response.ok) {
+		    // return { isError: true, message: 'Could not fetch events.' };
+		    // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
+		    //   status: 500,
+		    // });
+		    throw json(
+		      { message: 'Could not fetch events.' },
+		      {
+		        status: 500,
+		      }
+		    );
+		  } else {
+		    const resData = await response.json();
+		    return resData.events;
+		  }
+		}
+		
+		export async function loader({ request, params }) {
+		  const id = params.eventId;
+		
+		  return defer({
+		    event: await loadEvent(id), // await means react router will await loading of this data before loading the route...
+						// if we remove this component then it will defer the loading of this data as well.
+		    events: loadEvents(),
+		  });
+		}
+		
+		export async function action({ params, request }) {
+		  const eventId = params.eventId;
+		  const response = await fetch('http://localhost:8080/events/' + eventId, {
+		    method: request.method,
+		  });
+		
+		  if (!response.ok) {
+		    throw json(
+		      { message: 'Could not delete event.' },
+		      {
+		        status: 500,
+		      }
+		    );
+		  }
+		  return redirect('/events');
+		}
 
 
 	
