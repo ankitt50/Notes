@@ -2241,6 +2241,205 @@ React - It is a JS library to build User Interfaces
 		export default EditEventPage;
 
 
+-- just like we can fetch data using loader functions of the react-router-dom, we can also save/submit data using the actions provided by react-router-dom.
+-- to save/submit data from a form, use 'Form' component provided by the react-router-dom. Form-component makes sure that instead of submitting the form to the server 
+   by default, it sent to the action-function.
+-- if you want to navigate to any new page after submitting the data, then return redirect-object from the action function. 
+
+	App.js file ::
+		.....
+		import NewEventPage, { action as newEventAction } from './pages/NewEvent';
+		
+		const router = createBrowserRouter([
+		  {
+		   .......
+		          { path: 'new', element: <NewEventPage />, action: newEventAction },
+		   .......
+		]);
+		......
+		
+		export default App;
+
+
+	NewEvent.js file ::
+		import { json, redirect } from 'react-router-dom';
+		import EventForm from '../components/EventForm';
+		
+		function NewEventPage() {
+		  return <EventForm />;
+		}
+		
+		export default NewEventPage;
+
+
+		// action-function
+		export async function action({ request, params }) {
+		  const data = await request.formData(); // to get the details submitted in the form
+		
+		  const eventData = {
+		    title: data.get('title'),
+		    .......
+		  };
+		
+		  const response = await fetch('http://localhost:8080/events', {
+		    method: 'POST',
+		    headers: {
+		      'Content-Type': 'application/json',
+		    },
+		    body: JSON.stringify(eventData),
+		  });
+		
+		  if (!response.ok) {
+		    throw json({ message: 'Could not save event.' }, { status: 500 });
+		  }
+		
+		  return redirect('/events');
+		}
+
+	EventForm.js File ::
+
+		import { useNavigate } from 'react-router-dom';
+		import classes from './EventForm.module.css';
+		
+		function EventForm({ method, event }) {
+		  const navigate = useNavigate();
+		  function cancelHandler() {
+		    navigate('..');
+		  }
+		
+		  return (
+
+		/// use 'Form' component 
+		/// you can also define 'action' attribute of the Form-component. This attribute can be used to define action-function, if we want to use action-fn defined
+		/// in any other route (not the currently active one). ex: <Form method = '' action = '/some-other-path' ....>
+		    <Form method='post' className={classes.form}>
+		      <p>
+		        <label htmlFor="title">Title</label>
+		        <input
+		          id="title"
+		          type="text"
+		          name="title"
+		          required
+		          defaultValue={event ? event.title : ''}
+		        />
+		      </p>
+		      ....
+		      ....
+		      ....
+		      <div className={classes.actions}>
+		        <button type="button" onClick={cancelHandler}>
+		          Cancel
+		        </button>
+		        <button>Save</button>
+		      </div>
+		    </Form>
+		  );
+		}
+		
+		export default EventForm;
+
+
+-- The action functions can also be triggered programatically (instead from as button / form) using 'useSubmit' hook.
+
+		const submit = useSubmit();
+
+		submit(null,{method:'delete'}) // first argument is the data that we want to submit, & similar to form, we can collect that data
+							   // using the request.formData() in action-fn. In this case we are sending it null.
+							   // action property in the second argument can be used, if want to use any other route's action-function
+
+-- Similar to loader function, we can also return data from the action function. But this is not that common. It can however be used when we want to return any form 	 
+   validation errors. To access this returned data in the component we can use useActionData() hook.
+
+	EventsForm.js file ::
+
+		import {
+		  Form,
+		  useNavigate,
+		  useNavigation,
+		  useActionData,
+		} from 'react-router-dom';
+		
+		import classes from './EventForm.module.css';
+		
+		function EventForm({ method, event }) {
+		  const data = useActionData(); // to get the data/validation errors returned by the action-fn
+		  const navigate = useNavigate();
+		  const navigation = useNavigation();
+		
+		  const isSubmitting = navigation.state === 'submitting';
+		
+		  function cancelHandler() {
+		    navigate('..');
+		  }
+		
+		  return (
+		    <Form method="post" className={classes.form}>
+		      {data && data.errors && (
+		        <ul>
+		          {Object.values(data.errors).map((err) => (
+		            <li key={err}>{err}</li>
+		          ))}
+		        </ul>
+		      )}
+		      <p>
+		        <label htmlFor="title">Title</label>
+		        <input
+		          id="title"
+		          type="text"
+		          name="title"
+		          required
+		          defaultValue={event ? event.title : ''}
+		        />
+		      </p>
+		      ...
+		      ...
+		      ...
+		      <div className={classes.actions}>
+		        <button type="button" onClick={cancelHandler} disabled={isSubmitting}>
+		          Cancel
+		        </button>
+		        <button disabled={isSubmitting}>
+		          {isSubmitting ? 'Submitting...' : 'Save'}
+		        </button>
+		      </div>
+		    </Form>
+		  );
+		}
+		
+		export default EventForm;
+
+	NewEvent.js file (where the action function is defined) ::
+
+		export async function action({ request, params }) {
+		  const data = await request.formData();
+		
+		  const eventData = {
+		    title: data.get('title'),
+		    image: data.get('image'),
+		    date: data.get('date'),
+		    description: data.get('description'),
+		  };
+		
+		  const response = await fetch('http://localhost:8080/events', {
+		    method: 'POST',
+		    headers: {
+		      'Content-Type': 'application/json',
+		    },
+		    body: JSON.stringify(eventData),
+		  });
+		
+		  if (response.status === 422) {
+		    return response; 
+		  }
+		
+		  if (!response.ok) {
+		    throw json({ message: 'Could not save event.' }, { status: 500 });
+		  }
+		
+		  return redirect('/events');
+		}
+
+
 
 	
 
