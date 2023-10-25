@@ -1,0 +1,12 @@
+What is NextJS?
+- Its a React Framework for production.
+- Fullstack framework for ReactJS
+- Server-side rendering
+- File based routing
+- FullStack capabilities
+
+Create a NextJS project
+- download and install nodejs
+- npx create-next-app
+- npm install
+- npm run dev
