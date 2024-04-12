@@ -1,1 +1,27 @@
+----------------Intro-------------------------------------------------
+---------------------------------------------------------------------
+Maven?
+1) build tool
+2) dependency management
+3) project management
+4) standardized approach to building software
+5) CLI tool/ IDE integration
+
+
+Maven Components/Landscape
+1) POM
+2) Repositories
+3) Plugins and Goals
+4) Lifecycle (clean, default, site) and Phases
+
+Maven components interaction
+1) command is given via CLI (ex : mvn install)
+2) POM file is referred for project information.
+3) Dependency Manager will check and pull in the dependencies and the plugins.
+4) Life cycle begins (ex : Compile phase and the plugins of that phase, then Test phase and the plugins of that phase, then install phase and its plugins....... and so on)
+
+
+
+
+
 
