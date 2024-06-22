@@ -10,6 +10,9 @@
 // console.log(document.querySelector('.guess').value);
 
 /* What's DOM and DOM manipulation 
+To read more about DOMs read these articles : https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction#accessing_the_dom,
+https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
+
 DOM : document object model. structured representation of html documents. It allows JS to access html elements ans manipulate them.
 
 DOM tree structure. --> parent and child.
